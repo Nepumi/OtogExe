@@ -32,13 +32,13 @@ namespace Otogexe
 
 
         //Stopwatch
-        private Stopwatch STW;
+        public long Now_Time = 0;
+        private long LS_Time = 0;
 
 
         private void Form1_Activated(object sender, System.EventArgs e)
         {
             ChangeState(SState);
-            STW = new Stopwatch();
             //DEBUG(CUR_DIR);
         }
         
@@ -52,32 +52,43 @@ namespace Otogexe
 
             if (STWStart.Text == "Start Clock")
             {
-                STW.Start();
+                LS_Time = DateTime.Now.ToFileTimeUtc();
                 STWStart.Text = "Stop Clock";
             }
             else
             {
-                STW.Stop();
                 STWStart.Text = "Start Clock";
             }
             
         }
 
+        
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            STW_Dis.Text =string.Format("{0:hh\\:mm\\:ss\\.ff}", STW.Elapsed) ;
+            if (STWStart.Text == "Stop Clock")
+            {
+                Now_Time += (DateTime.Now.ToFileTimeUtc() - LS_Time)/100000;
+                LS_Time = DateTime.Now.ToFileTimeUtc();
+            }
+            STW_Dis.Text = string.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                Now_Time/6000/60,
+                Now_Time/6000%60,
+                Now_Time/100%60,
+                Now_Time%100
+                );
         }
 
         private void STW_Reset_Click(object sender, EventArgs e)
         {
-            STW.Restart();
-            STW.Stop();
+            
 
             STW_Dis.Visible = false;
             STW_Reset.Visible = false;
             Help3.Enabled = true;
             Help4.Enabled = true;
             STWStart.Text = "Start Clock";
+            Now_Time = 0;
         }
 
         public void ChangeState(int SSTATE)
@@ -404,40 +415,27 @@ namespace Otogexe
                
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.UseShellExecute = false;
-                //p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                //p.StartInfo.RedirectStandardOutput = true;
+
 
                 p.Start();
-                do
-                {
-                    if (!p.HasExited)
-                    {
-                        // Refresh the current process property values.
-                        p.Refresh();
+                StreamReader reader = p.StandardError;
+                string ERRRRROR = reader.ReadToEnd();
 
-                        if (!p.Responding)
-                        {
-                            p.Close();
-                            ChangeState(0);
-                            MessageBox.Show("WTF M8!!", "ERROR!");
-                            Res.Text = "[!]";
-                            return;
-                        }
-                    }
-                }
-                while (!p.WaitForExit(1000));
                 p.WaitForExit();
-                    if (p.ExitCode != 0)
+                
+
+
+                if (p.ExitCode != 0)
                     {
-                        ChangeState(0);
+                    
+                    ChangeState(0);
                         MessageBox.Show("Compile Error!!!!", "ERROR!");
                         Res.Text = "[Compile Error!!!!]";
                         Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
 
-                        StreamReader reader = p.StandardOutput;
-                        string output = reader.ReadToEnd();
-                        DEBUG(output);
-                        CommentO = output.Split('\n');
+                        CommentO = ERRRRROR.Split('\n');
 
                         return;
                     }
