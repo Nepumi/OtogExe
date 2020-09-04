@@ -346,6 +346,18 @@ namespace Otogexe
             }
             else
             {
+
+                if (GroupTaskSelect.Text.Contains("Otog"))
+                {
+                    Warning.Text = "โจทย์ดังกล่าวได้เอามาจาก Otog.cf ซึ่งตัวทดสอบจะไม่เหมือนกับของจริง!";
+                }
+                else if(GroupTaskSelect.Text.Contains("EN811300"))
+                {
+                    Warning.Text = "พึ่งระลึกไว้เสมอว่า ตัวทดสอบนี้ ไม่เหมือน Autolab";
+                }
+
+                
+
                 TaskSubed.Text = GroupTaskSelect.Text+"/"+TaskSelect.Text;
                 FileSubed.Text = DirOfSC.Text;
                 SpoilBut.Checked = false;
@@ -428,17 +440,20 @@ namespace Otogexe
 
 
                 if (p.ExitCode != 0)
-                    {
+                {
+
                     
                     ChangeState(0);
-                        MessageBox.Show("Compile Error!!!!", "ERROR!");
-                        Res.Text = "[Compile Error!!!!]";
-                        Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
+                    SystemSounds.Exclamation.Play();
+                    MessageBox.Show("Compile Error!!!!", "ERROR!");
+                    Res.Text = "[Compile Error!!!!]";
+                    Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
 
-                        CommentO = ERRRRROR.Split('\n');
+                    CommentO = ERRRRROR.Split('\n');
+                    SpoilBut.Checked = true;
 
-                        return;
-                    }
+                    return;
+                }
                 
                 Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\CompileSpace\\CppRunner.exe\"");
             

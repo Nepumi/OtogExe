@@ -52,6 +52,7 @@
             this.STW_Dis = new System.Windows.Forms.Label();
             this.STW_Reset = new System.Windows.Forms.Button();
             this.GroupTaskSelect = new System.Windows.Forms.ComboBox();
+            this.Warning = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // TaskSelect
@@ -162,7 +163,8 @@
             this.Commenttt.Multiline = true;
             this.Commenttt.Name = "Commenttt";
             this.Commenttt.ReadOnly = true;
-            this.Commenttt.Size = new System.Drawing.Size(570, 172);
+            this.Commenttt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.Commenttt.Size = new System.Drawing.Size(570, 144);
             this.Commenttt.TabIndex = 9;
             // 
             // Help4
@@ -299,12 +301,23 @@
             this.GroupTaskSelect.TextChanged += new System.EventHandler(this.GroupTaskSelect_TextChanged);
             this.GroupTaskSelect.Click += new System.EventHandler(this.GroupTaskSelect_Click);
             // 
+            // Warning
+            // 
+            this.Warning.AutoSize = true;
+            this.Warning.Font = new System.Drawing.Font("Browallia New", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Warning.ForeColor = System.Drawing.Color.Red;
+            this.Warning.Location = new System.Drawing.Point(55, 656);
+            this.Warning.Name = "Warning";
+            this.Warning.Size = new System.Drawing.Size(0, 35);
+            this.Warning.TabIndex = 20;
+            // 
             // Otog
             // 
             this.AcceptButton = this.Help3;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 700);
+            this.Controls.Add(this.Warning);
             this.Controls.Add(this.GroupTaskSelect);
             this.Controls.Add(this.STW_Reset);
             this.Controls.Add(this.STW_Dis);
@@ -361,6 +374,7 @@
         private System.Windows.Forms.Label STW_Dis;
         private System.Windows.Forms.Button STW_Reset;
         private System.Windows.Forms.ComboBox GroupTaskSelect;
+        private System.Windows.Forms.Label Warning;
     }
 }
 
