@@ -403,9 +403,27 @@ namespace Otogexe
 
         public void DoSubmission()
         {
+
+            Queue<string> DelTo = new Queue<string>();
+
             //Part Compile
             ChangeState(3);
             Process Runnu = new Process();
+            string NewFile = "";
+
+            {
+                string[] SPL = FileSubed.Text.Split('\\');
+                NewFile = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\";
+
+                string[] SPL2 = SPL[SPL.Length - 1].Split('.');
+
+                NewFile += "Src" +"."+ SPL2[1];
+
+
+            }
+
+            File.Copy(FileSubed.Text, NewFile,true);
+            DelTo.Enqueue(NewFile);
 
 
             if (DirOfSC.Text.EndsWith(".cpp") || DirOfSC.Text.EndsWith(".cc")|| DirOfSC.Text.EndsWith(".cxx")||
@@ -416,13 +434,13 @@ namespace Otogexe
                 {
                     p.StartInfo = new ProcessStartInfo(CUR_DIR + "\\Compiler\\MinGW\\bin\\gcc.exe",
                    "-O2 \"" +
-                   FileSubed.Text + "\" -o \"" + CUR_DIR + "\\CompileSpace\\CppRunner.exe\"");
+                   NewFile + "\" -o \"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\"+ TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
                 }
                 else
                 {
                     p.StartInfo = new ProcessStartInfo(CUR_DIR + "\\Compiler\\MinGW\\bin\\g++.exe",
                    "-O2 -std=c++17 \"" +
-                   FileSubed.Text + "\" -o \"" + CUR_DIR + "\\CompileSpace\\CppRunner.exe\"");
+                   NewFile + "\" -o \"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
                 }
                
                 p.StartInfo.CreateNoWindow = true;
@@ -451,21 +469,36 @@ namespace Otogexe
 
                     CommentO = ERRRRROR.Split('\n');
                     SpoilBut.Checked = true;
-
+                    File.Delete(NewFile);
                     return;
                 }
                 
-                Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\CompileSpace\\CppRunner.exe\"");
-            
+                Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
+
+                DelTo.Enqueue(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+
             }
             else if (DirOfSC.Text.EndsWith(".py")){
-                Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Compiler\\Python\\python.exe\"","\""+ FileSubed.Text + "\"");
+
+                if (File.Exists( CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\ReverseCode.py" ))
+                {
+                    //DEBUG("ReverseCode");
+                    Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Compiler\\Python\\python.exe\"", "\"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\ReverseCode.py" + "\"");
+                }
+                else
+                {
+                    Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Compiler\\Python\\python.exe\"", "\"" + NewFile + "\"");
+                }
+
+                
             }
             else
             {
                 MessageBox.Show("ไม่รุจะคอมไพลยังไงอ่ะ", "เหมียว!!!");
                 Res.Text = "[!!!!]";
                 Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
+                ChangeState(0);
+                return;
             }
             
             //Part Judge
@@ -513,7 +546,17 @@ namespace Otogexe
                         Otog_Verdict += "X";
                         if (Test_Comment == "")
                         {
-                            Test_Comment = "Runtime Error in case " + Test_case.ToString() + "\n\nโปรแกรมคุณระเบิดตัวเองทิ้ง";
+                            if (NewFile.EndsWith(".py"))
+                            {
+                                StreamReader reader = Runnu.StandardError;
+                                string Content = reader.ReadToEnd();
+                                MessageBox.Show("Maybe Error!!!!", "ERROR!");
+                                Test_Comment = "Maybe Error in case " + Test_case.ToString() + "\nโปรแกรมคุณระเบิดตัวเองทิ้ง\n\n"+ Content;
+                            }
+                            else
+                            {
+                                Test_Comment = "Runtime Error in case " + Test_case.ToString() + "\n\nโปรแกรมคุณระเบิดตัวเองทิ้ง";
+                            }
                         }
                     }
                     else
@@ -623,10 +666,10 @@ namespace Otogexe
                 //DEBUG("Ended\n" );
                 Test_case++;
             }
-           
 
 
 
+            foreach (string F in DelTo) File.Delete(F);
 
 
             Res.Text = "["+Otog_Verdict+"]";
