@@ -70,11 +70,6 @@
             this.TaskSelect.Enabled = false;
             this.TaskSelect.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TaskSelect.FormattingEnabled = true;
-            this.TaskSelect.Items.AddRange(new object[] {
-            "OTOGOTOG",
-            "TestA",
-            "1.asdjhv\'",
-            "as2.asdlkjfjk"});
             this.TaskSelect.Location = new System.Drawing.Point(297, 68);
             this.TaskSelect.Name = "TaskSelect";
             this.TaskSelect.Size = new System.Drawing.Size(252, 36);
@@ -300,11 +295,6 @@
             // 
             this.GroupTaskSelect.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GroupTaskSelect.FormattingEnabled = true;
-            this.GroupTaskSelect.Items.AddRange(new object[] {
-            "OTOGOTOG",
-            "TestA",
-            "1.asdjhv\'",
-            "as2.asdlkjfjk"});
             this.GroupTaskSelect.Location = new System.Drawing.Point(31, 68);
             this.GroupTaskSelect.Name = "GroupTaskSelect";
             this.GroupTaskSelect.Size = new System.Drawing.Size(252, 36);
@@ -330,7 +320,7 @@
             this.CurVer.Name = "CurVer";
             this.CurVer.Size = new System.Drawing.Size(99, 28);
             this.CurVer.TabIndex = 21;
-            this.CurVer.Text = "Beta 0.0.2";
+            this.CurVer.Text = "Beta 0.0.3";
             this.CurVer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TestModeCheck

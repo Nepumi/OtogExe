@@ -248,7 +248,7 @@ namespace Otogexe
 
             if (Isthere)
             {
-                DEBUG("MEOW");
+                //DEBUG("MEOW");
                 if (File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Info.Isl"))
                 {
 
@@ -713,6 +713,7 @@ namespace Otogexe
                     Cur_Task_Info.Info_running.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.C.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
                     Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
                     Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.C.MainCMD, Cur_Task_Info.Info_compiling.C.ArgsCMD);
                 }
                 else
                 {
@@ -792,6 +793,8 @@ namespace Otogexe
             {
                 BarSub.Value = Test_case * 100 / n_Test_case;
                 Res.Text = string.Format("[Test #{0}]", Test_case);
+                //DEBUG("testCase " + Test_case.ToString());
+                //DEBUG(string.Format("[{0}]",Otog_Verdict));
                 Res.ForeColor = Color.Black;
 
                 string Test_Dir = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" ;
@@ -923,6 +926,7 @@ namespace Otogexe
                                         Test_Comment = string.Format("In line {0} Expected '{1}' but yours '{2}' in test case {3}",BT+1, Now_Sol, Now_Out, Test_case.ToString());
                                         Test_Comment += string.Format("\n\nในบรรทัดคำตอบที่ {0} คำตอบคือ '{1}' แต่ต่างกับแก!!! '{2}'",BT+1, Now_Sol, Now_Out);
                                     }
+                                    break;
                                 }
 
                             }
