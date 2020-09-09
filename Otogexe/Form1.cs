@@ -12,22 +12,53 @@ using System.Windows.Forms;
 using System.Media;
 using System.Diagnostics;
 
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+
+using Newtonsoft.Json;
+
+
+
 namespace Otogexe
 {
+
+    
 
 
     public partial class Otog : Form
     {
+
 
         public int SState = 1;
         public string[] CommentO = new string[] { "Not submit yet?" };
 
         public string CUR_DIR = Directory.GetCurrentDirectory();
 
+        public Over_Task Cur_Task_Info = new Over_Task();
+
+
+        public bool Real_Con()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204"))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+       
 
         public Otog()
         {
             InitializeComponent();
+
+            
         }
 
 
@@ -39,9 +70,11 @@ namespace Otogexe
         private void Form1_Activated(object sender, System.EventArgs e)
         {
             ChangeState(SState);
+
             //DEBUG(CUR_DIR);
         }
-        
+
+
         private void STWStart_Click(object sender, EventArgs e)
         {
             STW_Reset.Visible = true;
@@ -52,6 +85,8 @@ namespace Otogexe
 
             if (STWStart.Text == "Start Clock")
             {
+                GroupTaskSelect.Enabled = false;
+                TaskSelect.Enabled = false;
                 LS_Time = DateTime.Now.ToFileTimeUtc();
                 STWStart.Text = "Stop Clock";
             }
@@ -59,7 +94,9 @@ namespace Otogexe
             {
                 STWStart.Text = "Start Clock";
             }
+
             
+
         }
 
         
@@ -87,6 +124,15 @@ namespace Otogexe
             STW_Reset.Visible = false;
             Help3.Enabled = true;
             Help4.Enabled = true;
+            GroupTaskSelect.Enabled = true;
+
+
+            bool Isthere = false;
+            foreach (string PP in GroupTaskSelect.Items)
+            {
+                Isthere = Isthere || (PP == GroupTaskSelect.Text);
+            }
+            TaskSelect.Enabled = Isthere;
             STWStart.Text = "Start Clock";
             Now_Time = 0;
         }
@@ -101,6 +147,7 @@ namespace Otogexe
                 case 2: Sstate.Text = "Select file"; break;
                 case 3: Sstate.Text = "Compile..."; break;
                 case 4: Sstate.Text = "Judging..."; break;
+                case 5: Sstate.Text = "Testing..."; break;
                 case -1: Sstate.Text = "Select Group"; break;
                 default: Sstate.Text = "ERROR!"; break;
             }
@@ -119,6 +166,7 @@ namespace Otogexe
         public void DEBUG(string Meow)
         {
             MessageBox.Show(Meow);
+            Console.WriteLine(Meow);
         }
 
 
@@ -156,6 +204,8 @@ namespace Otogexe
             TaskSelect.Enabled = Isthere;
             TaskSelect.Text = "";
 
+            
+
             ChangeState(SState);
         }
 
@@ -188,12 +238,31 @@ namespace Otogexe
             else if (File.Exists(DirOfSC.Text))
             {
                 SState = 0;
+                
             }
             else
             {
                 SState = 2;
             }
             Docu.Enabled = Isthere;
+
+            if (Isthere)
+            {
+                DEBUG("MEOW");
+                if (File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Info.Isl"))
+                {
+
+                    Cur_Task_Info = JsonConvert.DeserializeObject<Over_Task>(File.ReadAllText(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Info.Isl"));
+                }
+                else Cur_Task_Info = new Over_Task();
+                TimeLimitlabel.Text = string.Format("Time: {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f));
+                MemLimitlabel.Text = string.Format("Mem: {0}mb", Cur_Task_Info.Info_task.MemLimit);
+            }
+            TimeLimitlabel.Visible = Isthere;
+            MemLimitlabel.Visible = Isthere;
+
+
+
 
             ChangeState(SState);
 
@@ -346,7 +415,7 @@ namespace Otogexe
             }
             else
             {
-
+                BarSub.Value = 0;
                 if (GroupTaskSelect.Text.Contains("Otog"))
                 {
                     Warning.Text = "โจทย์ดังกล่าวได้เอามาจาก Otog.cf ซึ่งตัวทดสอบจะไม่เหมือนกับของจริง!";
@@ -362,7 +431,8 @@ namespace Otogexe
                 FileSubed.Text = DirOfSC.Text;
                 SpoilBut.Checked = false;
 
-                DoSubmission();
+                if(TestModeCheck.Checked) DoTesting();
+                else DoSubmission();
             }
 
         }
@@ -396,10 +466,213 @@ namespace Otogexe
             
         }
 
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+        }
+
+        private void TestModeCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            labelInput.Visible = TestModeCheck.Checked;
+            labelOutput.Visible = TestModeCheck.Checked;
+            TestInput.Visible = TestModeCheck.Checked;
+            TestOutput.Visible = TestModeCheck.Checked;
+            Commenttt.Visible = !TestModeCheck.Checked;
+            SpoilBut.Visible = !TestModeCheck.Checked;
+
+            Sub.Text = TestModeCheck.Checked ? "Run!" : "Submit!";
+
+            TestInput.Lines = new string[] { };
+            TestOutput.Lines = new string[] { };
+            Commenttt.Lines = new string[] { };
+
+        }
+
+
         /// <summary>
         /// Part Compiled!!!!!!
         /// </summary>
 
+
+        public void DoTesting()
+        {
+
+            TestOutput.Lines = new string[] { };
+
+            Queue<string> DelTo = new Queue<string>();
+
+            //Part Compile
+            ChangeState(3);
+            Process Runnu = new Process();
+            string NewFile = "";
+
+            {
+                string[] SPL = FileSubed.Text.Split('\\');
+                NewFile = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\";
+
+                string[] SPL2 = SPL[SPL.Length - 1].Split('.');
+
+                NewFile += "Src" + "." + SPL2[1];
+
+
+            }
+
+
+            File.Copy(FileSubed.Text, NewFile, true);
+            DelTo.Enqueue(NewFile);
+
+
+            if (DirOfSC.Text.EndsWith(".cpp") || DirOfSC.Text.EndsWith(".cc") || DirOfSC.Text.EndsWith(".cxx") ||
+                DirOfSC.Text.EndsWith(".c"))
+            {
+                Process p = new Process();
+                if (DirOfSC.Text.EndsWith(".c"))
+                {
+                    Cur_Task_Info.Info_compiling.C.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_compiling.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.C.MainCMD = JsonConverting(Cur_Task_Info.Info_running.C.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.C.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.C.MainCMD, Cur_Task_Info.Info_compiling.C.ArgsCMD);
+                }
+                else
+                {
+                    Cur_Task_Info.Info_compiling.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_compiling.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.CPP.MainCMD, Cur_Task_Info.Info_compiling.CPP.ArgsCMD);
+                }
+
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardError = true;
+                //p.StartInfo.RedirectStandardOutput = true;
+
+
+                p.Start();
+                StreamReader reader = p.StandardError;
+                string ERRRRROR = reader.ReadToEnd();
+
+                p.WaitForExit();
+
+
+
+                if (p.ExitCode != 0)
+                {
+
+
+                    ChangeState(0);
+                    SystemSounds.Exclamation.Play();
+                    MessageBox.Show("Compile Error!!!!", "ERROR!");
+                    Res.Text = "[Compile Error!!!!]";
+                    Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
+
+                    CommentO = ERRRRROR.Split('\n');
+                    SpoilBut.Checked = true;
+                    File.Delete(NewFile);
+                    return;
+                }
+
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.CPP.MainCMD);
+
+                DelTo.Enqueue(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+
+            }
+            else if (DirOfSC.Text.EndsWith(".py"))
+            {
+                Cur_Task_Info.Info_running.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_running.PY.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_running.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.PY.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.PY.MainCMD, Cur_Task_Info.Info_running.PY.ArgsCMD);
+            }
+            else
+            {
+                MessageBox.Show("ไม่รุจะคอมไพลยังไงอ่ะ", "เหมียว!!!");
+                Res.Text = "[!!!!]";
+                Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
+                ChangeState(0);
+                return;
+            }
+
+            //Part Test
+            ChangeState(5);
+
+
+
+
+                string Otog_Verdict = "";
+                string Test_Comment = "";
+                Res.Text = string.Format("[Testing]");
+                Res.ForeColor = Color.Black;
+
+                string Test_Dir = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\";
+
+                Runnu.StartInfo.CreateNoWindow = true;
+                Runnu.StartInfo.UseShellExecute = false;
+                Runnu.StartInfo.RedirectStandardError = true;
+                Runnu.StartInfo.RedirectStandardInput = true;
+                Runnu.StartInfo.RedirectStandardOutput = true;
+                Runnu.Start();
+                //DEBUG("Stdin!");
+                StreamWriter INPUTT = Runnu.StandardInput;
+
+                INPUTT.Write(string.Join("\n",TestInput.Lines));
+                INPUTT.Close();
+
+                //DEBUG("Stdin Com!");
+
+                if (!Runnu.WaitForExit(Cur_Task_Info.Info_task.TimeLimit))
+                {
+                    Otog_Verdict = "Time Limit Exceed";
+                    Runnu.Kill();
+                    //DEBUG("Time Out!");
+                }
+                else
+                {
+                    if (Runnu.ExitCode != 0)
+                    {
+                        Otog_Verdict = "Runtime Error";
+                    }
+                    else
+                    {
+                        StreamReader reader = Runnu.StandardOutput;
+                        string output = reader.ReadToEnd();
+
+                        output = output.Replace(((char)10).ToString(), "");
+
+                        Otog_Verdict = "Test Complete";
+
+                        TestOutput.Lines = output.Split((char)13);
+
+                    }
+
+
+                }
+
+
+
+
+            foreach (string F in DelTo) File.Delete(F);
+
+            BarSub.Value = 100;
+            Res.Text = "[" + Otog_Verdict + "]";
+            if (Otog_Verdict == "Test Complete")
+            {
+                Res.ForeColor = Color.FromArgb(87 / 2, 229 / 2, 87 / 2);
+                CommentO = new string[] { "Test Ok :) YEY!" };
+                STWStart.Text = "Start Clock";
+            }
+            else
+            {
+                Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
+                CommentO = Test_Comment.Split('\n');
+            }
+
+
+            ChangeState(0);
+        }
 
         public void DoSubmission()
         {
@@ -417,32 +690,39 @@ namespace Otogexe
 
                 string[] SPL2 = SPL[SPL.Length - 1].Split('.');
 
-                NewFile += "Src" +"."+ SPL2[1];
+                NewFile += "Src" + "." + SPL2[1];
 
 
             }
 
-            File.Copy(FileSubed.Text, NewFile,true);
+           
+
+            File.Copy(FileSubed.Text, NewFile, true);
             DelTo.Enqueue(NewFile);
 
 
-            if (DirOfSC.Text.EndsWith(".cpp") || DirOfSC.Text.EndsWith(".cc")|| DirOfSC.Text.EndsWith(".cxx")||
+            if (DirOfSC.Text.EndsWith(".cpp") || DirOfSC.Text.EndsWith(".cc") || DirOfSC.Text.EndsWith(".cxx") ||
                 DirOfSC.Text.EndsWith(".c"))
             {
                 Process p = new Process();
                 if (DirOfSC.Text.EndsWith(".c"))
                 {
-                    p.StartInfo = new ProcessStartInfo(CUR_DIR + "\\Compiler\\MinGW\\bin\\gcc.exe",
-                   "-O2 \"" +
-                   NewFile + "\" -o \"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\"+ TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
+                    Cur_Task_Info.Info_compiling.C.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_compiling.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.C.MainCMD = JsonConverting(Cur_Task_Info.Info_running.C.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.C.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
                 }
                 else
                 {
-                    p.StartInfo = new ProcessStartInfo(CUR_DIR + "\\Compiler\\MinGW\\bin\\g++.exe",
-                   "-O2 -std=c++17 \"" +
-                   NewFile + "\" -o \"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
+                    Cur_Task_Info.Info_compiling.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_compiling.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.CPP.MainCMD, Cur_Task_Info.Info_compiling.CPP.ArgsCMD);
                 }
-               
+
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardError = true;
@@ -454,13 +734,13 @@ namespace Otogexe
                 string ERRRRROR = reader.ReadToEnd();
 
                 p.WaitForExit();
-                
+
 
 
                 if (p.ExitCode != 0)
                 {
 
-                    
+
                     ChangeState(0);
                     SystemSounds.Exclamation.Play();
                     MessageBox.Show("Compile Error!!!!", "ERROR!");
@@ -472,25 +752,17 @@ namespace Otogexe
                     File.Delete(NewFile);
                     return;
                 }
-                
-                Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe\"");
 
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.CPP.MainCMD);
+                //DEBUG(Cur_Task_Info.Info_running.CPP.MainCMD);
                 DelTo.Enqueue(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
 
             }
-            else if (DirOfSC.Text.EndsWith(".py")){
-
-                if (File.Exists( CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\ReverseCode.py" ))
-                {
-                    //DEBUG("ReverseCode");
-                    Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Compiler\\Python\\python.exe\"", "\"" + CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\ReverseCode.py" + "\"");
-                }
-                else
-                {
-                    Runnu.StartInfo = new ProcessStartInfo("\"" + CUR_DIR + "\\Compiler\\Python\\python.exe\"", "\"" + NewFile + "\"");
-                }
-
-                
+            else if (DirOfSC.Text.EndsWith(".py"))
+            {
+                Cur_Task_Info.Info_running.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_running.PY.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_running.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.PY.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.PY.MainCMD, Cur_Task_Info.Info_running.PY.ArgsCMD);
             }
             else
             {
@@ -500,16 +772,25 @@ namespace Otogexe
                 ChangeState(0);
                 return;
             }
-            
+
             //Part Judge
             ChangeState(4);
 
 
             int Test_case = 1;
+            int n_Test_case = 1;
+
+            while (File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" + Test_case.ToString() + ".in"))
+            {
+                n_Test_case = Test_case;
+                Test_case++;
+            }
+            Test_case = 1;
             string Otog_Verdict = "";
             string Test_Comment = "";
-            while (File.Exists(CUR_DIR + "\\Problems\\"+GroupTaskSelect.Text+"\\"+TaskSelect.Text+"\\"+ Test_case.ToString()+".in"))
+            while (Test_case <= n_Test_case)
             {
+                BarSub.Value = Test_case * 100 / n_Test_case;
                 Res.Text = string.Format("[Test #{0}]", Test_case);
                 Res.ForeColor = Color.Black;
 
@@ -529,7 +810,7 @@ namespace Otogexe
 
                 //DEBUG("Stdin Com!");
 
-                if (!Runnu.WaitForExit(2000))
+                if (!Runnu.WaitForExit(Cur_Task_Info.Info_task.TimeLimit))
                 {
                     Otog_Verdict += "T";
                     if (Test_Comment == "")
@@ -669,7 +950,17 @@ namespace Otogexe
 
 
 
-            foreach (string F in DelTo) File.Delete(F);
+            foreach (string F in DelTo)
+            {
+                try
+                {
+                    File.Delete(F);
+                }
+                catch
+                {
+
+                }
+            }
 
 
             Res.Text = "["+Otog_Verdict+"]";
@@ -677,6 +968,7 @@ namespace Otogexe
             {
                 Res.ForeColor = Color.FromArgb(87 / 2, 229 / 2, 87 / 2);
                 CommentO = new string[]{"Test Ok :) YEY!"};
+                STWStart.Text = "Start Clock";
             }
             else
             {
@@ -688,6 +980,162 @@ namespace Otogexe
             ChangeState(0);
         }
 
-        
+        private void CheckBut_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string URL = "https://otogexe.firebaseio.com/Now_Ver.json";
+
+                HttpClient Hclient = new HttpClient();
+                Hclient.BaseAddress = new Uri(URL);
+
+                // Add an Accept header for JSON format.
+                Hclient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // List data response.
+                HttpResponseMessage response = Hclient.GetAsync("").Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response body.
+                    string dataObjects = response.Content.ReadAsStringAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
+
+                    dataObjects = dataObjects.Split('\"')[1];
+
+
+                    if (CurVer.Text != dataObjects)
+                    {
+                        MessageBox.Show("Update Available", "Update!");
+
+                        Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+                    }
+                    else
+                    {
+                        MessageBox.Show("It's Up to date\n\nYey", "Meow");
+                    }
+
+
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Can\'t Check Update :(", "ERROR!");
+                }
+
+                //Make any other calls using HttpClient here.
+
+                //Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
+                Hclient.Dispose();
+            }
+            catch
+            {
+                MessageBox.Show("Can\'t Check Update :(", "ERROR!");
+            }
+        }
+
+
+        public string JsonConverting(string X, string Cur_Src, string Cur_RunExe)
+        {
+            string MEOW = X;
+            MEOW = MEOW.Replace("<<Cur_Dir>>", CUR_DIR);
+            MEOW = MEOW.Replace("<<Cur_Src>>", Cur_Src);
+            MEOW = MEOW.Replace("<<Cur_Run_Exe>>", Cur_RunExe);
+            return MEOW;
+        }
     }
+
+
+
+
+    public class Mini_CMD
+    {
+        public string MainCMD
+        {
+            set; get;
+        }
+        public string ArgsCMD
+        {
+            set; get;
+        }
+
+        public Mini_CMD(string a, string b)
+        {
+            MainCMD = a;
+            ArgsCMD = b;
+        }
+
+    }
+
+    public class Info_Task
+    {
+        public int TimeLimit
+        {
+            get; set;
+        } = 1000;
+        public int MemLimit
+        {
+            get; set;
+        } = 256;
+
+
+    };
+
+    public class Info_Compiling
+    {
+        public Mini_CMD C
+        {
+            get; set;
+        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\gcc.exe\"", "-O2 \"<<Cur_Src>>\" -o \"<<Cur_Run_Exe>>\"");
+        public Mini_CMD CPP
+        {
+            get; set;
+        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\g++.exe\"", "-O2 -std=c++17 \"<<Cur_Src>> \" -o \"<<Cur_Run_Exe>>\"");
+        public Mini_CMD PY
+        {
+            get; set;
+        } = new Mini_CMD("cmd.exe", "echo Meow");
+        public Mini_CMD JAVA
+        {
+            get; set;
+        } = new Mini_CMD("cmd.exe", "echo Meow");
+
+    };
+
+    public class Info_Running
+    {
+        public Mini_CMD C
+        {
+            get; set;
+        } = new Mini_CMD("<<Cur_Run_Exe>>", "");
+        public Mini_CMD CPP
+        {
+            get; set;
+        } = new Mini_CMD("<<Cur_Run_Exe>>", "");
+        public Mini_CMD PY
+        {
+            get; set;
+        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "\"<<Cur_Src>>\"");
+        public Mini_CMD JAVA
+        {
+            get; set;
+        } = new Mini_CMD("cmd.exe", "echo Meow");
+
+    };
+
+    public class Over_Task
+    {
+        public Info_Task Info_task
+        {
+            set; get;
+        } = new Info_Task();
+
+        public Info_Compiling Info_compiling
+        {
+            set; get;
+        } = new Info_Compiling();
+        public Info_Running Info_running
+        {
+            set; get;
+        } = new Info_Running();
+    };
 }

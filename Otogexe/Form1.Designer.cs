@@ -53,6 +53,16 @@
             this.STW_Reset = new System.Windows.Forms.Button();
             this.GroupTaskSelect = new System.Windows.Forms.ComboBox();
             this.Warning = new System.Windows.Forms.Label();
+            this.CurVer = new System.Windows.Forms.Label();
+            this.TestModeCheck = new System.Windows.Forms.CheckBox();
+            this.TestOutput = new System.Windows.Forms.TextBox();
+            this.TestInput = new System.Windows.Forms.TextBox();
+            this.labelOutput = new System.Windows.Forms.Label();
+            this.labelInput = new System.Windows.Forms.Label();
+            this.CheckBut = new System.Windows.Forms.Button();
+            this.BarSub = new System.Windows.Forms.ProgressBar();
+            this.TimeLimitlabel = new System.Windows.Forms.Label();
+            this.MemLimitlabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // TaskSelect
@@ -85,7 +95,7 @@
             // DirOfSC
             // 
             this.DirOfSC.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DirOfSC.Location = new System.Drawing.Point(29, 132);
+            this.DirOfSC.Location = new System.Drawing.Point(29, 147);
             this.DirOfSC.Name = "DirOfSC";
             this.DirOfSC.Size = new System.Drawing.Size(520, 34);
             this.DirOfSC.TabIndex = 3;
@@ -94,7 +104,7 @@
             // DirBro
             // 
             this.DirBro.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DirBro.Location = new System.Drawing.Point(564, 133);
+            this.DirBro.Location = new System.Drawing.Point(563, 147);
             this.DirBro.Name = "DirBro";
             this.DirBro.Size = new System.Drawing.Size(109, 34);
             this.DirBro.TabIndex = 4;
@@ -105,9 +115,9 @@
             // Sub
             // 
             this.Sub.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sub.Location = new System.Drawing.Point(29, 186);
+            this.Sub.Location = new System.Drawing.Point(29, 187);
             this.Sub.Name = "Sub";
-            this.Sub.Size = new System.Drawing.Size(117, 69);
+            this.Sub.Size = new System.Drawing.Size(117, 68);
             this.Sub.TabIndex = 5;
             this.Sub.Text = "SUBMIT!";
             this.Sub.UseVisualStyleBackColor = true;
@@ -260,6 +270,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
+            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // STW_Dis
@@ -311,12 +322,138 @@
             this.Warning.Size = new System.Drawing.Size(0, 35);
             this.Warning.TabIndex = 20;
             // 
+            // CurVer
+            // 
+            this.CurVer.AutoSize = true;
+            this.CurVer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CurVer.Location = new System.Drawing.Point(452, 19);
+            this.CurVer.Name = "CurVer";
+            this.CurVer.Size = new System.Drawing.Size(99, 28);
+            this.CurVer.TabIndex = 21;
+            this.CurVer.Text = "Beta 0.0.2";
+            this.CurVer.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // TestModeCheck
+            // 
+            this.TestModeCheck.AutoSize = true;
+            this.TestModeCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestModeCheck.Location = new System.Drawing.Point(152, 224);
+            this.TestModeCheck.Name = "TestModeCheck";
+            this.TestModeCheck.Size = new System.Drawing.Size(105, 27);
+            this.TestModeCheck.TabIndex = 24;
+            this.TestModeCheck.Text = "TestMode";
+            this.TestModeCheck.UseVisualStyleBackColor = true;
+            this.TestModeCheck.CheckedChanged += new System.EventHandler(this.TestModeCheck_CheckedChanged);
+            // 
+            // TestOutput
+            // 
+            this.TestOutput.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestOutput.Location = new System.Drawing.Point(344, 547);
+            this.TestOutput.Multiline = true;
+            this.TestOutput.Name = "TestOutput";
+            this.TestOutput.ReadOnly = true;
+            this.TestOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TestOutput.Size = new System.Drawing.Size(285, 105);
+            this.TestOutput.TabIndex = 25;
+            this.TestOutput.Visible = false;
+            // 
+            // TestInput
+            // 
+            this.TestInput.AcceptsReturn = true;
+            this.TestInput.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestInput.Location = new System.Drawing.Point(59, 547);
+            this.TestInput.Multiline = true;
+            this.TestInput.Name = "TestInput";
+            this.TestInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TestInput.Size = new System.Drawing.Size(288, 105);
+            this.TestInput.TabIndex = 26;
+            this.TestInput.Visible = false;
+            this.TestInput.WordWrap = false;
+            // 
+            // labelOutput
+            // 
+            this.labelOutput.AutoSize = true;
+            this.labelOutput.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelOutput.Location = new System.Drawing.Point(349, 516);
+            this.labelOutput.Name = "labelOutput";
+            this.labelOutput.Size = new System.Drawing.Size(76, 28);
+            this.labelOutput.TabIndex = 27;
+            this.labelOutput.Text = "Output";
+            this.labelOutput.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.labelOutput.Visible = false;
+            // 
+            // labelInput
+            // 
+            this.labelInput.AutoSize = true;
+            this.labelInput.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInput.Location = new System.Drawing.Point(70, 516);
+            this.labelInput.Name = "labelInput";
+            this.labelInput.Size = new System.Drawing.Size(60, 28);
+            this.labelInput.TabIndex = 28;
+            this.labelInput.Text = "Input";
+            this.labelInput.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.labelInput.Visible = false;
+            // 
+            // CheckBut
+            // 
+            this.CheckBut.Location = new System.Drawing.Point(562, 16);
+            this.CheckBut.Name = "CheckBut";
+            this.CheckBut.Size = new System.Drawing.Size(109, 39);
+            this.CheckBut.TabIndex = 29;
+            this.CheckBut.Text = "Check Update";
+            this.CheckBut.UseVisualStyleBackColor = true;
+            this.CheckBut.Click += new System.EventHandler(this.CheckBut_Click);
+            // 
+            // BarSub
+            // 
+            this.BarSub.Location = new System.Drawing.Point(59, 689);
+            this.BarSub.Name = "BarSub";
+            this.BarSub.Size = new System.Drawing.Size(570, 23);
+            this.BarSub.TabIndex = 30;
+            this.BarSub.Value = 100;
+            // 
+            // TimeLimitlabel
+            // 
+            this.TimeLimitlabel.AutoSize = true;
+            this.TimeLimitlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeLimitlabel.ForeColor = System.Drawing.Color.Tomato;
+            this.TimeLimitlabel.Location = new System.Drawing.Point(33, 107);
+            this.TimeLimitlabel.Name = "TimeLimitlabel";
+            this.TimeLimitlabel.Size = new System.Drawing.Size(83, 28);
+            this.TimeLimitlabel.TabIndex = 31;
+            this.TimeLimitlabel.Text = "Time: 1s";
+            this.TimeLimitlabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.TimeLimitlabel.Visible = false;
+            // 
+            // MemLimitlabel
+            // 
+            this.MemLimitlabel.AutoSize = true;
+            this.MemLimitlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MemLimitlabel.ForeColor = System.Drawing.Color.Tomato;
+            this.MemLimitlabel.Location = new System.Drawing.Point(156, 107);
+            this.MemLimitlabel.Name = "MemLimitlabel";
+            this.MemLimitlabel.Size = new System.Drawing.Size(127, 28);
+            this.MemLimitlabel.TabIndex = 32;
+            this.MemLimitlabel.Text = "Mem: 256mb";
+            this.MemLimitlabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.MemLimitlabel.Visible = false;
+            // 
             // Otog
             // 
             this.AcceptButton = this.Help3;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 700);
+            this.ClientSize = new System.Drawing.Size(700, 724);
+            this.Controls.Add(this.MemLimitlabel);
+            this.Controls.Add(this.TimeLimitlabel);
+            this.Controls.Add(this.BarSub);
+            this.Controls.Add(this.CheckBut);
+            this.Controls.Add(this.labelInput);
+            this.Controls.Add(this.labelOutput);
+            this.Controls.Add(this.TestInput);
+            this.Controls.Add(this.TestOutput);
+            this.Controls.Add(this.TestModeCheck);
+            this.Controls.Add(this.CurVer);
             this.Controls.Add(this.Warning);
             this.Controls.Add(this.GroupTaskSelect);
             this.Controls.Add(this.STW_Reset);
@@ -375,6 +512,16 @@
         private System.Windows.Forms.Button STW_Reset;
         private System.Windows.Forms.ComboBox GroupTaskSelect;
         private System.Windows.Forms.Label Warning;
+        private System.Windows.Forms.Label CurVer;
+        private System.Windows.Forms.CheckBox TestModeCheck;
+        private System.Windows.Forms.TextBox TestOutput;
+        private System.Windows.Forms.TextBox TestInput;
+        private System.Windows.Forms.Label labelOutput;
+        private System.Windows.Forms.Label labelInput;
+        private System.Windows.Forms.Button CheckBut;
+        private System.Windows.Forms.ProgressBar BarSub;
+        private System.Windows.Forms.Label TimeLimitlabel;
+        private System.Windows.Forms.Label MemLimitlabel;
     }
 }
 
