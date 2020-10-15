@@ -40,7 +40,6 @@
             this.Res = new System.Windows.Forms.Label();
             this.SpoilBut = new System.Windows.Forms.CheckBox();
             this.Commenttt = new System.Windows.Forms.TextBox();
-            this.Help4 = new System.Windows.Forms.Button();
             this.JustUnder = new System.Windows.Forms.TextBox();
             this.Docu = new System.Windows.Forms.Button();
             this.Help3 = new System.Windows.Forms.Button();
@@ -71,6 +70,9 @@
             this.LangSelect = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.LangChan = new System.Windows.Forms.Button();
+            this.LangPic = new System.Windows.Forms.PictureBox();
+            this.MoreTask = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.LangPic)).BeginInit();
             this.SuspendLayout();
             // 
             // TaskSelect
@@ -141,9 +143,9 @@
             // 
             this.ResLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ResLabel.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ResLabel.Location = new System.Drawing.Point(61, 385);
+            this.ResLabel.Location = new System.Drawing.Point(12, 384);
             this.ResLabel.Name = "ResLabel";
-            this.ResLabel.Size = new System.Drawing.Size(91, 32);
+            this.ResLabel.Size = new System.Drawing.Size(140, 32);
             this.ResLabel.TabIndex = 6;
             this.ResLabel.Text = "Result :";
             this.ResLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -153,7 +155,7 @@
             this.Res.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Res.AutoSize = true;
             this.Res.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Res.Location = new System.Drawing.Point(152, 386);
+            this.Res.Location = new System.Drawing.Point(152, 385);
             this.Res.Name = "Res";
             this.Res.Size = new System.Drawing.Size(29, 32);
             this.Res.TabIndex = 7;
@@ -164,7 +166,7 @@
             this.SpoilBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SpoilBut.AutoSize = true;
             this.SpoilBut.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpoilBut.Location = new System.Drawing.Point(61, 456);
+            this.SpoilBut.Location = new System.Drawing.Point(61, 455);
             this.SpoilBut.Name = "SpoilBut";
             this.SpoilBut.Size = new System.Drawing.Size(154, 27);
             this.SpoilBut.TabIndex = 8;
@@ -176,8 +178,8 @@
             // 
             this.Commenttt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Commenttt.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Commenttt.Location = new System.Drawing.Point(59, 508);
+            this.Commenttt.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Commenttt.Location = new System.Drawing.Point(59, 507);
             this.Commenttt.Multiline = true;
             this.Commenttt.Name = "Commenttt";
             this.Commenttt.ReadOnly = true;
@@ -185,22 +187,11 @@
             this.Commenttt.Size = new System.Drawing.Size(570, 144);
             this.Commenttt.TabIndex = 9;
             // 
-            // Help4
-            // 
-            this.Help4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Help4.Location = new System.Drawing.Point(564, 322);
-            this.Help4.Name = "Help4";
-            this.Help4.Size = new System.Drawing.Size(108, 33);
-            this.Help4.TabIndex = 10;
-            this.Help4.Text = "อีหยังวะ";
-            this.Help4.UseVisualStyleBackColor = true;
-            this.Help4.Click += new System.EventHandler(this.Help4_Click);
-            // 
             // JustUnder
             // 
             this.JustUnder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.JustUnder.Font = new System.Drawing.Font("Segoe UI", 1.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JustUnder.Location = new System.Drawing.Point(29, 306);
+            this.JustUnder.Location = new System.Drawing.Point(29, 305);
             this.JustUnder.Name = "JustUnder";
             this.JustUnder.ReadOnly = true;
             this.JustUnder.Size = new System.Drawing.Size(643, 10);
@@ -225,7 +216,7 @@
             this.Help3.Name = "Help3";
             this.Help3.Size = new System.Drawing.Size(108, 33);
             this.Help3.TabIndex = 9;
-            this.Help3.Text = "อีหยังวะ";
+            this.Help3.Text = "How to use";
             this.Help3.UseVisualStyleBackColor = true;
             this.Help3.Click += new System.EventHandler(this.Help3_Click);
             // 
@@ -233,7 +224,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(88, 353);
+            this.label2.Location = new System.Drawing.Point(88, 352);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 32);
             this.label2.TabIndex = 14;
@@ -243,8 +234,9 @@
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(81, 321);
+            this.label3.Location = new System.Drawing.Point(81, 320);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 32);
             this.label3.TabIndex = 15;
@@ -256,7 +248,7 @@
             this.FileSubed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.FileSubed.AutoSize = true;
             this.FileSubed.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileSubed.Location = new System.Drawing.Point(152, 354);
+            this.FileSubed.Location = new System.Drawing.Point(152, 353);
             this.FileSubed.Name = "FileSubed";
             this.FileSubed.Size = new System.Drawing.Size(0, 32);
             this.FileSubed.TabIndex = 16;
@@ -266,7 +258,7 @@
             this.TaskSubed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TaskSubed.AutoSize = true;
             this.TaskSubed.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TaskSubed.Location = new System.Drawing.Point(152, 323);
+            this.TaskSubed.Location = new System.Drawing.Point(152, 322);
             this.TaskSubed.Name = "TaskSubed";
             this.TaskSubed.Size = new System.Drawing.Size(0, 32);
             this.TaskSubed.TabIndex = 17;
@@ -331,7 +323,7 @@
             this.Warning.AutoSize = true;
             this.Warning.Font = new System.Drawing.Font("Browallia New", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Warning.ForeColor = System.Drawing.Color.Red;
-            this.Warning.Location = new System.Drawing.Point(55, 656);
+            this.Warning.Location = new System.Drawing.Point(55, 655);
             this.Warning.Name = "Warning";
             this.Warning.Size = new System.Drawing.Size(0, 35);
             this.Warning.TabIndex = 20;
@@ -343,9 +335,9 @@
             this.CurVer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CurVer.Location = new System.Drawing.Point(333, 20);
             this.CurVer.Name = "CurVer";
-            this.CurVer.Size = new System.Drawing.Size(100, 28);
+            this.CurVer.Size = new System.Drawing.Size(97, 28);
             this.CurVer.TabIndex = 21;
-            this.CurVer.Text = "Beta 0.0.4";
+            this.CurVer.Text = "Beta 1.0.0";
             this.CurVer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TestModeCheck
@@ -365,7 +357,7 @@
             this.TestOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TestOutput.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestOutput.Location = new System.Drawing.Point(344, 547);
+            this.TestOutput.Location = new System.Drawing.Point(344, 546);
             this.TestOutput.Multiline = true;
             this.TestOutput.Name = "TestOutput";
             this.TestOutput.ReadOnly = true;
@@ -380,7 +372,7 @@
             this.TestInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TestInput.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestInput.Location = new System.Drawing.Point(59, 547);
+            this.TestInput.Location = new System.Drawing.Point(59, 546);
             this.TestInput.Multiline = true;
             this.TestInput.Name = "TestInput";
             this.TestInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -395,7 +387,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelOutput.AutoSize = true;
             this.labelOutput.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelOutput.Location = new System.Drawing.Point(349, 516);
+            this.labelOutput.Location = new System.Drawing.Point(349, 515);
             this.labelOutput.Name = "labelOutput";
             this.labelOutput.Size = new System.Drawing.Size(76, 28);
             this.labelOutput.TabIndex = 27;
@@ -409,7 +401,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelInput.AutoSize = true;
             this.labelInput.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInput.Location = new System.Drawing.Point(70, 516);
+            this.labelInput.Location = new System.Drawing.Point(70, 515);
             this.labelInput.Name = "labelInput";
             this.labelInput.Size = new System.Drawing.Size(60, 28);
             this.labelInput.TabIndex = 28;
@@ -458,7 +450,7 @@
             // 
             this.PointLa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PointLa.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PointLa.Location = new System.Drawing.Point(69, 418);
+            this.PointLa.Location = new System.Drawing.Point(69, 417);
             this.PointLa.Name = "PointLa";
             this.PointLa.Size = new System.Drawing.Size(81, 32);
             this.PointLa.TabIndex = 33;
@@ -470,7 +462,7 @@
             this.Poi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Poi.AutoSize = true;
             this.Poi.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Poi.Location = new System.Drawing.Point(146, 418);
+            this.Poi.Location = new System.Drawing.Point(146, 417);
             this.Poi.Name = "Poi";
             this.Poi.Size = new System.Drawing.Size(28, 32);
             this.Poi.TabIndex = 34;
@@ -480,7 +472,7 @@
             // 
             this.TimeLa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeLa.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLa.Location = new System.Drawing.Point(240, 418);
+            this.TimeLa.Location = new System.Drawing.Point(240, 417);
             this.TimeLa.Name = "TimeLa";
             this.TimeLa.Size = new System.Drawing.Size(73, 32);
             this.TimeLa.TabIndex = 35;
@@ -492,7 +484,7 @@
             this.TimeUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeUse.AutoSize = true;
             this.TimeUse.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeUse.Location = new System.Drawing.Point(319, 418);
+            this.TimeUse.Location = new System.Drawing.Point(319, 417);
             this.TimeUse.Name = "TimeUse";
             this.TimeUse.Size = new System.Drawing.Size(28, 32);
             this.TimeUse.TabIndex = 36;
@@ -504,7 +496,7 @@
             this.TimeLa2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeLa2.AutoSize = true;
             this.TimeLa2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLa2.Location = new System.Drawing.Point(397, 418);
+            this.TimeLa2.Location = new System.Drawing.Point(397, 417);
             this.TimeLa2.Name = "TimeLa2";
             this.TimeLa2.Size = new System.Drawing.Size(46, 32);
             this.TimeLa2.TabIndex = 37;
@@ -517,7 +509,8 @@
             this.LangSelect.Items.AddRange(new object[] {
             "C",
             "C++",
-            "Python"});
+            "Python",
+            "Java"});
             this.LangSelect.Location = new System.Drawing.Point(31, 145);
             this.LangSelect.Name = "LangSelect";
             this.LangSelect.Size = new System.Drawing.Size(113, 36);
@@ -529,7 +522,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(33, 112);
+            this.label4.Location = new System.Drawing.Point(26, 112);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 30);
             this.label4.TabIndex = 39;
@@ -547,12 +540,34 @@
             this.LangChan.UseVisualStyleBackColor = true;
             this.LangChan.Click += new System.EventHandler(this.LangChan_Click);
             // 
+            // LangPic
+            // 
+            this.LangPic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.LangPic.Image = global::Otogexe.Properties.Resources.Python;
+            this.LangPic.Location = new System.Drawing.Point(0, 223);
+            this.LangPic.Name = "LangPic";
+            this.LangPic.Size = new System.Drawing.Size(500, 500);
+            this.LangPic.TabIndex = 41;
+            this.LangPic.TabStop = false;
+            // 
+            // MoreTask
+            // 
+            this.MoreTask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MoreTask.Location = new System.Drawing.Point(102, 21);
+            this.MoreTask.Name = "MoreTask";
+            this.MoreTask.Size = new System.Drawing.Size(108, 33);
+            this.MoreTask.TabIndex = 42;
+            this.MoreTask.Text = "More Task";
+            this.MoreTask.UseVisualStyleBackColor = true;
+            this.MoreTask.Click += new System.EventHandler(this.MoreTask_Click);
+            // 
             // Otog
             // 
             this.AcceptButton = this.Help3;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 724);
+            this.ClientSize = new System.Drawing.Size(700, 723);
+            this.Controls.Add(this.MoreTask);
             this.Controls.Add(this.LangChan);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.LangSelect);
@@ -582,7 +597,6 @@
             this.Controls.Add(this.Help3);
             this.Controls.Add(this.Docu);
             this.Controls.Add(this.JustUnder);
-            this.Controls.Add(this.Help4);
             this.Controls.Add(this.Commenttt);
             this.Controls.Add(this.SpoilBut);
             this.Controls.Add(this.Res);
@@ -593,11 +607,13 @@
             this.Controls.Add(this.DirOfSC);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TaskSelect);
+            this.Controls.Add(this.LangPic);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Otog";
             this.Text = "Otog Exe";
             this.Activated += new System.EventHandler(this.Form1_Activated);
+            ((System.ComponentModel.ISupportInitialize)(this.LangPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -615,7 +631,6 @@
         private System.Windows.Forms.Label Res;
         private System.Windows.Forms.CheckBox SpoilBut;
         private System.Windows.Forms.TextBox Commenttt;
-        private System.Windows.Forms.Button Help4;
         private System.Windows.Forms.TextBox JustUnder;
         private System.Windows.Forms.Button Docu;
         private System.Windows.Forms.Button Help3;
@@ -646,6 +661,8 @@
         private System.Windows.Forms.ComboBox LangSelect;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button LangChan;
+        private System.Windows.Forms.PictureBox LangPic;
+        private System.Windows.Forms.Button MoreTask;
     }
 }
 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using System.Diagnostics;
+using System.Globalization;
 
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,11 +30,14 @@ namespace Otogexe
     public partial class Otog : Form
     {
 
-        public  List<string> Ava_Lang = new List<string> { "C","C++", "Python" };
+        public const int MAX_TESTCASE = 300;
+
+        public  List<string> Ava_Lang = new List<string> { "C","C++", "Python","Java"};
         public Dictionary<string, string> File_Type = new Dictionary<string, string>() {
             {"C","C source code|*.c;*.i"},
             {"C++","C++ source code|*.cpp;*.cc;*.cxx;*.c++;*.hpp;*.hh;*.hxx;*.h++;*.h;*.ii;"},
-            {"Python","Python source code|*.py;*.rpy;*.pyw;*.cpy;*.gyp;*.gypi;*.pyi;*.ipy;"}
+            {"Python","Python source code|*.py;*.rpy;*.pyw;*.cpy;*.gyp;*.gypi;*.pyi;*.ipy;"},
+            {"Java","Java source code|*.java;*.jav;"}
         };
 
         public List<Dictionary<string, string>> G_Lang = new List<Dictionary<string, string>>()
@@ -55,6 +59,8 @@ namespace Otogexe
                {"SUPMIT!","SUBMIT!" },
                {"TEST!","TEST!" },
                {"TestMode","Test Mode" },
+               {"Help","Help!"},
+               {"More Task","More Task"},
 
                {"S1","Select Task" },
                {"S0","Ready!" },
@@ -76,13 +82,21 @@ namespace Otogexe
                {"Input","Input" },
                {"Output","Output" },
 
-               {"JWAL","Expected {0} lines\nbut yours {1} lines in test case {2}" },
-               {"JWA","In line{0}\nExpected\n{1}\nbut yours\n{2}\nin test case {3}" },
-               {"JT","Time limit exceed at Test case {0}" },
-               {"JR","Runtime Error at Test case {0}" },
+               {"JWAL","Expected {0} lines\nbut yours {1} lines in test case {2}\n\nInput:\n{5}\n\nExpected:\n{3}\n\nYours:\n{4}" },
+               {"JWA","In line{0}\nExpected\n{1}\nbut yours\n{2}\nin test case {3}\n\n*Overall*\n\nInput:\n{6}\n\nExpected:\n{4}\n\nYours:\n{5}" },
+               {"JWAC","Wrong answer in Test case {0}\n\nThis is Special judge\nSo this is Judge message:\n{1}" },
+               {"JT","Time limit exceed in Test case {0}" },
+               {"JR","Runtime Error in Test case {0}" },
                {"CE","Compile Error!" },
                {"SJT","Time limit exceed" },
                {"SJR","Runtime Error" },
+               {"SJE","Judge Error" },
+               {"SJH","Partially Correct" },
+               {"SJW","Wrong answer" },
+               {"JE","Judge Error!"},
+               {"PE","Problem Error!"},
+               {"JS","Skiping Test case {0}"},
+               {"JH","Partially Correct in Test case {0}\n\nThis is Special judge\nSo this is Judge message:\n{1}"}
            },
            new Dictionary<string, string>{
                {"Call_Lang","ภาษาไทย" },
@@ -101,7 +115,9 @@ namespace Otogexe
                {"SUPMIT!","ส่ง!" },
                {"TEST!","ทดสอบ!" },
                {"TestMode","โหมดทดสอบ" },
-               
+               {"Help","ช่วยเหลือ"},
+               {"More Task","โจทย์ใหม่"},
+
                {"S1","กรุณาเลือกโจทย์" },
                {"S0","พร้อม!" },
                {"S2","กรุณาเลือกไฟล์" },
@@ -122,13 +138,23 @@ namespace Otogexe
                {"Input","ข้อมูลนำเข้า" },
                {"Output","ข้อมูลส่งออก" },
 
-               {"JWAL","คาดหวังว่าได้ {0} บรรทัด\nแต่โปรแกรมแกมี {1} บรรทัด ในตัวทดสอบที่ {2}" },
-               {"JWA","ในบรรทัดที่{0}\nคาดหวังว่าได้\n{1}\nแต่ของแกคือ\n{2}\nในตัวทดสอบที่ {3}" },
+
+               {"JWAL","คาดหวังว่าได้ {0} บรรทัด\nแต่โปรแกรมแกมี {1} บรรทัด ในตัวทดสอบที่ {2}\nอินพุต:\n{5}\n\nเฉลย:\n{3}\n\nของแก:\n{4}" },
+               {"JWA","ในบรรทัดที่{0}\nคาดหวังว่าได้\n{1}\nแต่ของแกคือ\n{2}\nในตัวทดสอบที่ {3}\n\n*ภาพรวม*\n\nอินพุต:\n{6}\n\nเฉลย:\n{4}\n\nของแก:\n{5}" },
+               {"JWAC","คำตอบไม่ถูกต้องในตัวทดสอบที่ {0}\n\nข้อนี้จะมีการตรวจแบบพิเศษ\nซึ่งนี้คือข้อความที่มาจากการตรวจดังกล่าว:\n{1}" },
+
                {"JT","เวลาเกินในตัวทดสอบที่ {0}" },
                {"JR","โปรแกรมระเบิดตัวเองในตัวทดสอบที่ {0}" },
                {"CE","คอมไพล์ เออเร่อ!" },
                {"SJT","เวลาเกิน" },
                {"SJR","โปรแกรมระเบิด" },
+               {"SJE","โปรแกรมตรวจผิดพลาด" },
+               {"SJH","ได้คะแนนบางส่วน" },
+               {"SJW","คำตอบผิด" },
+               {"JE","การตรวจมีข้อผิดพลาด"},
+               {"PE","โจทย์มีข้อผิดพลาด"},
+               {"JS","ข้ามการตรวจในตัวทดสอบที่ {0}"},
+               {"JH","ได้คะแนน*บาง*ส่วนในตัวทดสอบที่ {0}\n\nข้อนี้จะมีการตรวจแบบพิเศษ\nซึ่งนี้คือข้อความที่มาจากการตรวจดังกล่าว:\n{1}"}
            },
             new Dictionary<string, string>{
                {"Call_Lang","พาศาทัย" },
@@ -156,6 +182,8 @@ namespace Otogexe
                {"S5","กำลังทำอะไรไม่รู่..." },
                {"S-1","รุกณาเรือกกุ่ลมโจ" },
                {"SERR","ERROR!" },
+               {"Help","เหมียว"},
+               {"More Task","จดมั่ย"},
 
                {"Start Clock","เริ่มเพลา" },
                {"Stop Clock","หยุดเพลา" },
@@ -168,13 +196,21 @@ namespace Otogexe
                {"Input","เข้าๆ" },
                {"Output","ออกๆ" },
 
-               {"JWAL","ยักดัย {0} บันธัด\nแต่มึงให้ {1} บันธัด {2}" },
-               {"JWA","บรรได{0}\nยักดัย\n{1}\nแต่ของมึงคือลือ\n{2}\n {3}" },
+               {"JWAL","ยักดัย {0} บันธัด\nแต่มึงให้ {1} บันธัด {2}\n\nใส่ข้าวปาย:\n{5}\n\nเชลย:\n{3}\n\nมึง:\n{4}" },
+               {"JWA","บรรได{0}\nยักดัย\n{1}\nแต่ของมึงคือลือ\n{2}\n{3}\n\n*เหมียว*\n\nใส่ข้าวปาย:\n{6}\n\nเชลย:\n{4}\n\nมึง:\n{5}" },
+               {"JWAC","อ่อนว่ะ {0}\n\nเจอของขลังของโจทย์ข้อนี้ล่ะสิ\n555555มนต์สะกดจิดมึงไว้ว่า:\n{1}" },
                {"JT","ช้า!!!!!!! {0}" },
                {"JR","ระเบิด!!!!!!! {0}" },
                {"CE","@#%*()@$^(@^%)(!@*" },
                {"SJT","ระเบิดเวลาาาาาาา" },
                {"SJR","อ้าาาาาาาาาาาาาาาาาาาาาาาาาาาาาาา" },
+               {"SJE","โจทย์กาก" },
+               {"SJH","ว้ายๆๆๆได้คะแนนแข่บังสวน" },
+               {"SJW","อ่อนว่ะ" },
+               {"JE","เหมียว"},
+               {"PE","โจทย์กาก"},
+               {"JS","ไม่ตรวจ({0})อ่ะ หยิ่ง"},
+                {"JH","ว้ายๆๆๆตัวทดสอบที่ {0}\n\nได้คะแนนแข่บังสวน\n\nเจอของขลังของโจทย์ข้อนี้ล่ะสิ\n555555มนต์สะกดจิดมึงไว้ว่า:\n{1}"}
            },
             new Dictionary<string, string>{
                {"Call_Lang","ภาษาแมว" },
@@ -193,6 +229,8 @@ namespace Otogexe
                {"SUPMIT!","เหมียว!" },
                {"TEST!","เหมียว!" },
                {"TestMode","เหมียว" },
+               {"Help","เหมียว"},
+               {"More Task","เหมียว"},
 
                {"S1","เหมียว" },
                {"S0","เหมียว!" },
@@ -214,13 +252,21 @@ namespace Otogexe
                {"Input","เหมียว" },
                {"Output","เหมียว" },
 
-               {"JWAL","เหมียว {0} เหมียว\nเหมียว {1} เหมียว {2}" },
-               {"JWA","เหมียว{0}\nเหมียว\n{1}\nเหมียว\n{2}\n เหมียว{3}" },
+               {"JWAL","เหมียว {0} เหมียว\nเหมียว {1} เหมียว {2}\n\nเหมียว:\n{5}\n\nเหมียว:\n{3}\n\nเหมียวเหงา:\n{4}" },
+               {"JWA","เหมียว{0}\nเหมียว\n{1}\nเหมียว\n{2}\n เหมียว{3}\n\n*เหมียว*\n\nเหมียว:\n{6}\n\nเหมียว:\n{4}\n\nเหมียวเหงา:\n{5}" },
+               {"JWAC","เหมียว {0}\n\nเหมียวเเหมี่ยว\nเหมี่ยวเหมี่ยวเหมียวเหมียว:\n{1}" },
                {"JT","เหมียว {0}" },
                {"JR","เหมียว {0}" },
                {"CE","เหมียว" },
                {"SJT","เหมียว" },
                {"SJR","เหมียว" },
+               {"SJE","เหมียว" },
+               {"SJH","เหมียว" },
+               {"SJW","เหมียว" },
+               {"JE","เหมียว"},
+               {"PE","เหมียว"},
+               {"JS","เหมียว"},
+                {"JH","เหมียวไม่เต็ม\n\nเหมียวเเหมี่ยว\nเหมี่ยวเหมี่ยวเหมียวเหมียว:\n{1}"}
            },
         };
 
@@ -229,6 +275,7 @@ namespace Otogexe
             {"C",1},
             {"C++",1},
             {"Python",5},
+            {"Java",1.5f}
         };
 
 
@@ -261,7 +308,42 @@ namespace Otogexe
         {
             InitializeComponent();
 
-            
+
+            if (!Directory.Exists(CUR_DIR + "\\Problems"))
+            {
+                MessageBox.Show("ไม่มีโจทย์อ่ะ");
+
+                if (File.Exists(CUR_DIR + "\\ProblemDownload.exe"))
+                {
+                    Process.Start(CUR_DIR + "\\ProblemDownload.exe");
+                }
+                else
+                {
+                    MessageBox.Show("ไม่พบโปรแกรมดาวโหลดโจทย์", "เกิดข้อผิดพลาด");
+                }
+
+                Close();
+            }
+
+
+            if (!Directory.Exists(CUR_DIR + "\\Compiler"))
+            {
+                MessageBox.Show("ไม่มีตัวรันโปรแกรมอ่ะ");
+
+                Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+
+                Close();
+            }
+
+            if (!Directory.Exists(CUR_DIR + "\\StdJudge"))
+            {
+                MessageBox.Show("ไม่มีตัวตรวจอ่ะ");
+
+                Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+
+                Close();
+            }
+
         }
 
 
@@ -274,18 +356,20 @@ namespace Otogexe
         {
             ChangeState(SState);
 
-            string[] subdirectoryEntries = Directory.GetDirectories(CUR_DIR + "\\Problems");
+            if (Directory.Exists(CUR_DIR + "\\Problems"))
+            {
+                string[] subdirectoryEntries = Directory.GetDirectories(CUR_DIR + "\\Problems");
 
-            // Loop through them to see if they have any other subdirectories
+                // Loop through them to see if they have any other subdirectories
 
-            foreach (string subdirectory in subdirectoryEntries)
+                foreach (string subdirectory in subdirectoryEntries)
 
-                GroupTaskSelect.Items.Add(subdirectory.Replace(CUR_DIR + "\\Problems\\", ""));
-            //DEBUG(CUR_DIR);
+                    GroupTaskSelect.Items.Add(subdirectory.Replace(CUR_DIR + "\\Problems\\", ""));
+                //DEBUG(CUR_DIR);
 
-            LangSelect.Items.Clear();
-            foreach (string llang in Ava_Lang)
-                LangSelect.Items.Add(llang);
+            }
+
+
 
 
         }
@@ -297,7 +381,6 @@ namespace Otogexe
             STW_Dis.Visible = true;
 
             Help3.Enabled = false;
-            Help4.Enabled = false;
 
             if (STWStart.Text == G_Lang[Lang_Index]["Start Clock"])
             {
@@ -341,7 +424,6 @@ namespace Otogexe
             STW_Dis.Visible = false;
             STW_Reset.Visible = false;
             Help3.Enabled = true;
-            Help4.Enabled = true;
             GroupTaskSelect.Enabled = true;
 
 
@@ -479,12 +561,68 @@ namespace Otogexe
             if (Isthere)
             {
                 //DEBUG("MEOW");
-                if (File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Info.Isl"))
+
+                string Pro_Path = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text;
+
+                if (File.Exists(Pro_Path + "\\Task_Com_Run.Isl"))
                 {
 
-                    Cur_Task_Info = JsonConvert.DeserializeObject<Over_Task>(File.ReadAllText(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Info.Isl"));
+                    Cur_Task_Info.Info_ComRun = JsonConvert.DeserializeObject<Dictionary<string, Com_Run>>(File.ReadAllText(Pro_Path + "\\Task_Com_Run.Isl"));
                 }
-                else Cur_Task_Info = new Over_Task();
+                else Cur_Task_Info = new Over_Task("default");
+
+
+                if (File.Exists(Pro_Path + "\\Task_Info.Isl"))
+                {
+
+                    Cur_Task_Info.Info_task = JsonConvert.DeserializeObject<Info_Task>(File.ReadAllText(Pro_Path + "\\Task_Info.Isl"));
+                }
+                else Cur_Task_Info.Info_task = new Info_Task();
+
+                if (File.Exists(Pro_Path + "\\Task_Judge.Isl"))
+                {
+
+                    Cur_Task_Info.Judge_Task = JsonConvert.DeserializeObject<Mini_CMD>(File.ReadAllText(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\Task_Judge.Isl"));
+                }
+                else Cur_Task_Info.Judge_Task = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "\"<<Cur_Dir>>\\StdJudge\\judge.py\""); ;
+
+
+
+                List<string> Task_Lang = Cur_Task_Info.Info_ComRun.Keys.ToList<string>();
+
+                if (LangSelect.Items.Count == Task_Lang.Count)
+                {
+                    bool Is_Right = true;
+                    foreach(string ll in Task_Lang)
+                    {
+                        if (!(LangSelect.Items.Contains(ll)))
+                        {
+                            Is_Right = false;
+                        }
+                    }
+
+                    if (!Is_Right)
+                    {
+                        LangSelect.Items.Clear();
+                        foreach (string ll in Task_Lang)
+                        {
+                            LangSelect.Items.Add(ll);
+                        }
+                        if (!Task_Lang.Contains(LangSelect.Text)) LangSelect.Text = Task_Lang[0];
+                    }
+                }
+                else
+                {
+                    LangSelect.Items.Clear();
+                    foreach (string ll in Task_Lang)
+                    {
+                        LangSelect.Items.Add(ll);
+                    }
+
+                    if(!Task_Lang.Contains(LangSelect.Text))LangSelect.Text = Task_Lang[0];
+                }
+
+
                 TimeLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Time"] +": {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f) * Time_Factor[LangSelect.Text]);
                 MemLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Mem"] + ": {0}mb", Cur_Task_Info.Info_task.MemLimit);
             }
@@ -504,11 +642,12 @@ namespace Otogexe
         private void DirBro_Click(object sender, EventArgs e)
         {
             OpenFileDialog choofdlog = new OpenFileDialog();
-            if (!File_Type.ContainsKey(LangSelect.Text))
+            string Lang_Str = LangSelect.Text;
+            if (!File_Type.ContainsKey(Lang_Str))
             {
                 MessageBox.Show("ERROR", "Lang Error :(");
             }
-            choofdlog.Filter = File_Type[LangSelect.Text];
+            choofdlog.Filter = File_Type[Lang_Str];
             choofdlog.FilterIndex = 1;
             choofdlog.Multiselect = false;
 
@@ -598,6 +737,13 @@ namespace Otogexe
 
         private void Help3_Click(object sender, EventArgs e)
         {
+
+            if(File.Exists(CUR_DIR+ "\\How To Use OTOGexe.pdf"))
+            {
+                Process.Start(CUR_DIR + "\\How To Use OTOGexe.pdf");
+                return;
+            }
+
             MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
             DialogResult result;
 
@@ -702,9 +848,12 @@ namespace Otogexe
 
                 
 
-                TaskSubed.Text = GroupTaskSelect.Text+"/"+TaskSelect.Text;
+                TaskSubed.Text = "["+GroupTaskSelect.Text+"]"+TaskSelect.Text;
                 FileSubed.Text = DirOfSC.Text;
                 SpoilBut.Checked = false;
+
+                if(!Directory.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text+ "\\CompileSpace"))
+                    Directory.CreateDirectory(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace");
 
                 if(TestModeCheck.Checked) DoTesting();
                 else DoSubmission();
@@ -718,11 +867,12 @@ namespace Otogexe
 
         private void Docu_Click(object sender, EventArgs e)
         {
-            string filename = "instructions.pdf";
+            string filename = "Meow.pdf";
 
             if(File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\doc.pdf"))
             {
                 filename = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\doc.pdf";
+                Process.Start(filename);
             }
             else
             {
@@ -783,7 +933,12 @@ namespace Otogexe
 
                 string[] SPL2 = SPL[SPL.Length - 1].Split('.');
 
-                NewFile += "Src" + "." + SPL2[1];
+                if (LangSelect.Text != "Java") NewFile += "Src" + "." + SPL2[1];
+                else
+                {
+                    DelTo.Enqueue(NewFile + SPL2[0] + ".class");
+                    NewFile += SPL2[0] + "." + SPL2[1];
+                }
 
 
             }
@@ -792,28 +947,20 @@ namespace Otogexe
             File.Copy(FileSubed.Text, NewFile, true);
             DelTo.Enqueue(NewFile);
 
+            string Lang_Str = LangSelect.Text;
 
-            if (LangSelect.Text == "C" || LangSelect.Text == "C++")
+
+
+            if (Cur_Task_Info.Info_ComRun.ContainsKey(Lang_Str))
             {
                 Process p = new Process();
-                if (LangSelect.Text == "C")
-                {
-                    Cur_Task_Info.Info_compiling.C.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_compiling.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.C.MainCMD = JsonConverting(Cur_Task_Info.Info_running.C.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.C.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.C.MainCMD, Cur_Task_Info.Info_compiling.C.ArgsCMD);
-                }
-                else
-                {
-                    Cur_Task_Info.Info_compiling.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_compiling.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile,CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.CPP.MainCMD, Cur_Task_Info.Info_compiling.CPP.ArgsCMD);
-                }
+
+                Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD, Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD);
+
 
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.UseShellExecute = false;
@@ -831,8 +978,6 @@ namespace Otogexe
 
                 if (p.ExitCode != 0)
                 {
-
-
                     ChangeState(0);
                     SystemSounds.Exclamation.Play();
                     MessageBox.Show(G_Lang[Lang_Index]["CE"], "ERROR!");
@@ -846,57 +991,10 @@ namespace Otogexe
                     return;
                 }
 
-                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.CPP.MainCMD);
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD, Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD);
 
                 DelTo.Enqueue(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
 
-            }
-            else if (DirOfSC.Text.EndsWith(".py"))
-            {
-                Process p = new Process();
-
-                Cur_Task_Info.Info_compiling.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.PY.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_compiling.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.PY.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_running.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_running.PY.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_running.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.PY.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.PY.MainCMD, Cur_Task_Info.Info_compiling.PY.ArgsCMD);
-
-                //DEBUG(Cur_Task_Info.Info_compiling.PY.MainCMD);
-                //DEBUG(Cur_Task_Info.Info_compiling.PY.ArgsCMD);
-
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardError = true;
-                //p.StartInfo.RedirectStandardOutput = true;
-
-
-                p.Start();
-                StreamReader reader = p.StandardError;
-                string ERRRRROR = reader.ReadToEnd();
-
-                //DEBUG(ERRRRROR);
-
-                //p.WaitForExit();
-
-
-                if (p.ExitCode != 0)
-                {
-
-                    ChangeState(0);
-                    SystemSounds.Exclamation.Play();
-                    MessageBox.Show(G_Lang[Lang_Index]["CE"], "ERROR!");
-                    Res.Text = "[Compile Error!!!!]";
-                    Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
-
-                    CommentO = ERRRRROR.Split('\n');
-                    SpoilBut.Checked = true;
-                    File.Delete(NewFile);
-                    Poi.Text = "0";
-                    return;
-                }
-
-
-                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.PY.MainCMD, Cur_Task_Info.Info_running.PY.ArgsCMD);
             }
             else
             {
@@ -942,7 +1040,7 @@ namespace Otogexe
             //DEBUG("Stdin Com!");
 
             int TimeLim = Cur_Task_Info.Info_task.TimeLimit;
-            TimeLim = (int)(TimeLim * Time_Factor[LangSelect.Text]);
+            TimeLim = (int)(TimeLim * Time_Factor[Lang_Str]);
 
 
             if (!Runnu.WaitForExit(TimeLim))
@@ -1014,44 +1112,35 @@ namespace Otogexe
             Process Runnu = new Process();
             string NewFile = "";
 
+            string[] SPL = FileSubed.Text.Split('\\');
+            NewFile = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\";
+
+            string[] SPL2 = SPL[SPL.Length - 1].Split('.');
+
+            if(LangSelect.Text != "Java") NewFile += "Src" + "." + SPL2[1];
+            else
             {
-                string[] SPL = FileSubed.Text.Split('\\');
-                NewFile = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\";
-
-                string[] SPL2 = SPL[SPL.Length - 1].Split('.');
-
-                NewFile += "Src" + "." + SPL2[1];
-
-
+                DelTo.Enqueue(NewFile+ SPL2[0]+".class");
+                NewFile += SPL2[0] + "." + SPL2[1];
             }
 
-           
+
+
 
             File.Copy(FileSubed.Text, NewFile, true);
             DelTo.Enqueue(NewFile);
+            string Lang_Str = LangSelect.Text;
 
-
-            if (LangSelect.Text=="C" || LangSelect.Text == "C++")
+            if (Cur_Task_Info.Info_ComRun.ContainsKey(Lang_Str))
             {
                 Process p = new Process();
-                if (LangSelect.Text == "C")
-                {
-                    Cur_Task_Info.Info_compiling.C.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_compiling.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.C.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.C.MainCMD = JsonConverting(Cur_Task_Info.Info_running.C.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.C.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.C.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.C.MainCMD, Cur_Task_Info.Info_compiling.C.ArgsCMD);
-                }
-                else
-                {
-                    Cur_Task_Info.Info_compiling.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_compiling.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.MainCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    Cur_Task_Info.Info_running.CPP.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.CPP.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                    p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.CPP.MainCMD, Cur_Task_Info.Info_compiling.CPP.ArgsCMD);
-                }
+
+                Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD = JsonConverting(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+                p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.MainCMD, Cur_Task_Info.Info_ComRun[Lang_Str].Compiler.ArgsCMD);
+
 
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.UseShellExecute = false;
@@ -1069,8 +1158,6 @@ namespace Otogexe
 
                 if (p.ExitCode != 0)
                 {
-
-
                     ChangeState(0);
                     SystemSounds.Exclamation.Play();
                     MessageBox.Show(G_Lang[Lang_Index]["CE"], "ERROR!");
@@ -1080,65 +1167,14 @@ namespace Otogexe
                     CommentO = ERRRRROR.Replace(CUR_DIR, "..").Split('\n');
                     SpoilBut.Checked = true;
                     File.Delete(NewFile);
-
                     Poi.Text = "0";
-                    TimeUse.Text = "0";
-
                     return;
                 }
 
-                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.CPP.MainCMD);
-                //DEBUG(Cur_Task_Info.Info_running.CPP.MainCMD);
+                
+
                 DelTo.Enqueue(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
 
-            }
-            else if (LangSelect.Text == "Python")
-            {
-
-                Process p = new Process();
-
-                Cur_Task_Info.Info_compiling.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_compiling.PY.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_compiling.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_compiling.PY.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_running.PY.MainCMD = JsonConverting(Cur_Task_Info.Info_running.PY.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                Cur_Task_Info.Info_running.PY.ArgsCMD = JsonConverting(Cur_Task_Info.Info_running.PY.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
-                p.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_compiling.PY.MainCMD, Cur_Task_Info.Info_compiling.PY.ArgsCMD);
-
-                //DEBUG(Cur_Task_Info.Info_compiling.PY.MainCMD);
-                //DEBUG(Cur_Task_Info.Info_compiling.PY.ArgsCMD);
-
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardError = true;
-                //p.StartInfo.RedirectStandardOutput = true;
-
-
-                p.Start();
-                StreamReader reader = p.StandardError;
-                string ERRRRROR = reader.ReadToEnd();
-
-                p.WaitForExit();
-
-
-                if (p.ExitCode != 0)
-                {
-
-                    ChangeState(0);
-                    SystemSounds.Exclamation.Play();
-                    MessageBox.Show(G_Lang[Lang_Index]["CE"], "ERROR!");
-                    Res.Text = "[Compile Error!!!!]";
-                    Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
-
-                    CommentO = ERRRRROR.Replace(CUR_DIR, "..").Split('\n');
-                    SpoilBut.Checked = true;
-                    File.Delete(NewFile);
-
-                    Poi.Text = "0";
-                    TimeUse.Text = "0";
-                    return;
-                }
-
-
-                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_running.PY.MainCMD, Cur_Task_Info.Info_running.PY.ArgsCMD);
             }
             else
             {
@@ -1146,9 +1182,7 @@ namespace Otogexe
                 Res.Text = "[!!!!]";
                 Res.ForeColor = Color.FromArgb(255 / 2, 103 / 2, 103 / 2);
                 ChangeState(0);
-
                 Poi.Text = "0";
-                TimeUse.Text = "0";
                 return;
             }
 
@@ -1158,179 +1192,209 @@ namespace Otogexe
 
             int Test_case = 1;
             int n_Test_case = 1;
-            int n_Pass = 0;
+            float Scoring = 0;
+            float Max_Scoring = 0;
             long TimeUsed = 0;
 
-            while (File.Exists(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" + Test_case.ToString() + ".in"))
-            {
-                n_Test_case = Test_case;
-                Test_case++;
-            }
+            int TimeLim = Cur_Task_Info.Info_task.TimeLimit;
+            TimeLim = (int)(TimeLim * Time_Factor[Lang_Str]);
+
+
             Test_case = 1;
             string Otog_Verdict = "";
             string Test_Comment = "";
-            while (Test_case <= n_Test_case)
+            string Over_Verdict = "";
+            int WT = -1;
+
+
+            Cur_Task_Info.Judge_Task.MainCMD = JsonConverting(Cur_Task_Info.Judge_Task.MainCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+            Cur_Task_Info.Judge_Task.ArgsCMD = JsonConverting(Cur_Task_Info.Judge_Task.ArgsCMD, NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe");
+
+            while (Test_case <= MAX_TESTCASE)
             {
-                Res.Text = string.Format("[Test #{0}]", Test_case);
-                //DEBUG("testCase " + Test_case.ToString());
-                //DEBUG(string.Format("[{0}]",Otog_Verdict));
-                Res.ForeColor = Color.Black;
+                Res.Text = "[Test #" + Test_case.ToString() + "]";
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Judge_Task.MainCMD, 
+                    Cur_Task_Info.Judge_Task.ArgsCMD + string.Format(" {0} {1} {2} \"{3}\" {4} {5}",
+                    Test_case,
+                    TimeLim,
+                    Cur_Task_Info.Info_task.MemLimit,
+                    CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\\\",
+                    Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD,
+                    Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD));
 
-                string Test_Dir = CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" ;
+                Runnu.StartInfo.CreateNoWindow = true;
+                Runnu.StartInfo.UseShellExecute = false;
+                Runnu.StartInfo.RedirectStandardOutput = true;
 
+                Runnu.Start();
+
+                Runnu.WaitForExit();
+
+                StreamReader reader = Runnu.StandardOutput;
+                string output = reader.ReadToEnd();
+                //DEBUG(output);
+
+
+                string[] VeryOut = output.Split(';');
+
+
+
+                if (VeryOut.Length != 5)
+                {
+                    Otog_Verdict += "!";
+                    if (Test_Comment == "")
+                    {
+                        Test_Comment = "KSES said "+G_Lang[Lang_Index]["PE"];
+                    }
+                    if (Over_Verdict == "")
+                    {
+                        Over_Verdict = G_Lang[Lang_Index]["SJE"] + Test_case;
+                    }
+                    Test_case++;
+                    continue;
+                }
+
+
+                if (VeryOut[0] == "E")
+                {
+                    break;
+                }
+
+
+                if (Test_Comment == "")
+                {
+                    if (VeryOut[0] == "T") {
+                        Over_Verdict = G_Lang[Lang_Index]["SJT"] + Test_case;
+                        Test_Comment = string.Format(G_Lang[Lang_Index]["JT"], Test_case);
+                    }
+                    else if (VeryOut[0] == "X")
+                    {
+                        Over_Verdict = G_Lang[Lang_Index]["SJR"] + Test_case;
+                        Test_Comment = string.Format(G_Lang[Lang_Index]["JR"], Test_case);
+                    }
+                    else if (VeryOut[0] == "S")
+                    {
+                        Test_Comment = string.Format(G_Lang[Lang_Index]["JS"], Test_case);
+                    }
+                        
+                    else if (VeryOut[0] == "H")
+                    {
+                        Over_Verdict = G_Lang[Lang_Index]["SJH"] + Test_case;
+                        Test_Comment = string.Format(G_Lang[Lang_Index]["JH"], Test_case, VeryOut[4]);
+                    }
+                    else if (VeryOut[0] == "!")
+                    {
+                        Over_Verdict = G_Lang[Lang_Index]["SJE"] + Test_case;
+                        Test_Comment = "KSES said " + G_Lang[Lang_Index]["PE"];
+                    }
+                    else if (VeryOut[0] == "-")
+                    {
+                        Over_Verdict = G_Lang[Lang_Index]["SJW"] + Test_case;
+                        if (Cur_Task_Info.Judge_Task.ArgsCMD == JsonConverting("\"<<Cur_Dir>>\\StdJudge\\judge.py\"", NewFile, CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\CompileSpace\\CppRunner.exe"))
+                        {
+                            //Std Judge
+                            if(WT==-1)WT = Test_case;
+                        }
+                        else
+                        {
+                            Test_Comment = string.Format(G_Lang[Lang_Index]["JWAC"], Test_case, VeryOut[4]);
+                        }
+                    }
+                }
+
+
+                Scoring += float.Parse(VeryOut[2], CultureInfo.InvariantCulture.NumberFormat);
+                Max_Scoring += float.Parse(VeryOut[3], CultureInfo.InvariantCulture.NumberFormat);
+
+                n_Test_case = Test_case;
+                Test_case++;
+                Otog_Verdict += VeryOut[0];
+
+                TimeUsed += (int)(float.Parse(VeryOut[1], CultureInfo.InvariantCulture.NumberFormat));
+                
+
+
+            }
+            
+
+
+            if(WT != -1)
+            {
+
+
+
+                
+
+                Runnu.StartInfo = new ProcessStartInfo(Cur_Task_Info.Info_ComRun[Lang_Str].Runner.MainCMD,Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD);
                 Runnu.StartInfo.CreateNoWindow = true;
                 Runnu.StartInfo.UseShellExecute = false;
                 Runnu.StartInfo.RedirectStandardError = true;
                 Runnu.StartInfo.RedirectStandardInput = true;
                 Runnu.StartInfo.RedirectStandardOutput = true;
 
-                Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
-                
-
                 Runnu.Start();
                 //DEBUG("Stdin!");
                 StreamWriter INPUTT = Runnu.StandardInput;
 
-                INPUTT.Write(File.ReadAllText(Test_Dir + Test_case.ToString() + ".in"));
+                string IIIN = File.ReadAllText(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" + WT.ToString() + ".in");
+
+                INPUTT.Write(IIIN);
                 INPUTT.Close();
 
-                //DEBUG("Stdin Com!");
 
-                int TimeLim = Cur_Task_Info.Info_task.TimeLimit;
-                TimeLim = (int)(TimeLim * Time_Factor[LangSelect.Text]);
+                Runnu.WaitForExit();
 
-                if (!Runnu.WaitForExit(TimeLim))
+
+
+                if (Runnu.ExitCode != 0)
                 {
-                    watch.Stop();
-                    TimeUsed += watch.ElapsedMilliseconds;
-                    Otog_Verdict += "T";
-                    if (Test_Comment == "")
-                    {
-                        Test_Comment = string.Format(G_Lang[Lang_Index]["JT"], Test_case);
-                    }
-                    Runnu.Kill();
-                    //DEBUG("Time Out!");
+                    Test_Comment = string.Format(G_Lang[Lang_Index]["JW"], Test_case)+"\n\n????????";
                 }
                 else
                 {
-                    watch.Stop();
-                    TimeUsed += watch.ElapsedMilliseconds;
-                    if (Runnu.ExitCode != 0)
+                    StreamReader reader = Runnu.StandardOutput;
+                    string output = reader.ReadToEnd().Trim(new Char[] { ' ', ((char)10), (char)13 });
+
+                    string Sol = File.ReadAllText(CUR_DIR + "\\Problems\\" + GroupTaskSelect.Text + "\\" + TaskSelect.Text + "\\" + WT.ToString() + ".sol").Trim(new Char[] { ' ', '\n' }); ;
+
+                    output = output.Replace(((char)10).ToString(), "");
+
+
+                    string[] Outs = output.Split((char)13);
+                    string[] Sols = Sol.Split((char)13);
+
+
+                    if (Outs.Length != Sols.Length)
                     {
-                        Otog_Verdict += "X";
-                        if (Test_Comment == "")
-                        {
-                            Test_Comment = string.Format(G_Lang[Lang_Index]["JE"], Test_case);
-                        }
+                        Test_Comment = string.Format(G_Lang[Lang_Index]["JWAL"], Sols.Length, Outs.Length, WT, string.Join("\n", Sols), string.Join("\n", Outs), IIIN);
                     }
                     else
                     {
-                        StreamReader reader = Runnu.StandardOutput;
-                        string output = reader.ReadToEnd();
 
-                        output = output.Replace(((char)10).ToString(), "");
-
-                        //strip
-                        int st = 0;
-                        for (st = 0; st < output.Length && (output[st] == '\n' || output[st] == ' ' || output[st] == 13); st++) ;
-                        int ed = 0;
-                        for (ed = output.Length - 1; ed >= 0 && (output[ed] == '\n' || output[ed] == ' ' || output[ed] == 13); ed--) ;
-                        if (ed - st + 1 > 0) output = output.Substring(st, ed - st + 1);
-
-
-                        
-
-                        string Sol = File.ReadAllText(Test_Dir + Test_case.ToString() + ".sol");
-
-                        Sol = Sol.Replace(((char)10).ToString(), "");
-
-                        for (st = 0; st < Sol.Length && (Sol[st] == '\n' || Sol[st] == ' ' || Sol[st] == 13); st++) ;
-                        for (ed = Sol.Length - 1; ed >= 0 && (Sol[ed] == '\n' || Sol[ed] == ' ' || Sol[ed] == 13); ed--) ;
-
-                        //DEBUG(string.Format("Out '{0}' as [{1},{2}]", Sol, st, ed));
-
-                        if (ed - st + 1 > 0) Sol = Sol.Substring(st, ed - st + 1);
-
-                        
-
-
-
-                        string[] Sols = Sol.Split((char)13);
-                        string[] outputs = output.Split((char)13);
-                        bool Is_Pass = true;
-
-
-                        //DEBUG(string.Format("S{0} vs O{1}", Sols.Length, outputs.Length));
-
-
-
-                        if (Sols.Length != outputs.Length)
-                        {//!Python! Has Mistery charactor
-                            Is_Pass = false;
-                            Otog_Verdict += "-";
-                            if (Test_Comment == "")
-                            {
-                                Test_Comment = string.Format(G_Lang[Lang_Index]["JWAL"], Sols.Length.ToString(), outputs.Length.ToString(),Test_case.ToString());
-                                
-                            }
-                        }
-                        else
+                        for(int i=0;i< Outs.Length; i++)
                         {
-                            int BT = 0;
-                            for(BT = 0;BT< Sols.Length; BT++)
+                            Outs[i] = Outs[i].Trim(new Char[] { ' ', '\n' });
+                            Sols[i] = Sols[i].Trim(new Char[] { ' ', '\n' });
+                            
+                            if(Outs[i] != Sols[i])
                             {
-                                string Now_Sol = Sols[BT];
-                                string Now_Out = outputs[BT];
-
-                                for (st = 0; st < Now_Sol.Length && (Now_Sol[st] == '\n' || Now_Sol[st] == ' ' || Now_Sol[st] == 13); st++) ;
-                                for (ed = Now_Sol.Length - 1; ed >= 0 && (Now_Sol[ed] == '\n' || Now_Sol[ed] == ' ' || Now_Sol[ed] == 13); ed--) ;
-
-                                if (ed - st + 1 > 0) Now_Sol = Now_Sol.Substring(st, ed - st + 1);
-
-                                for (st = 0; st < Now_Out.Length && (Now_Out[st] == '\n' || Now_Out[st] == ' ' || Now_Out[st] == 13); st++) ;
-                                for (ed = Now_Out.Length - 1;ed >= 0 && (Now_Out[ed] == '\n' || Now_Out[ed] == ' ' || Now_Out[ed]==13); ed--) ;
-
-                                if(ed - st + 1 > 0) Now_Out = Now_Out.Substring(st, ed - st + 1);
-
-                                //foreach (char x in Now_Out)
-                                //{
-                                //    DEBUG(string.Format("{0}:{1}", x, (int)x));
-                                //}
-
-                                if (Now_Sol != Now_Out)
-                                {
-                                    Is_Pass = false;
-                                    Otog_Verdict += "-";
-                                    if (Test_Comment == "")
-                                    {
-                                        Test_Comment = string.Format(G_Lang[Lang_Index]["JWA"], BT+1, Now_Sol, Now_Out, Test_case.ToString());
-                                    }
-                                    break;
-                                }
-
+                                Test_Comment = string.Format(G_Lang[Lang_Index]["JWA"],i+1, Sols[i], Outs[i], WT, string.Join("\n", Sols), string.Join("\n", Outs), IIIN);
+                                break;
                             }
 
-                            if (Is_Pass)
-                            {
-                                Otog_Verdict += "P";
-                                n_Pass++;
-                            }
                         }
 
 
                     }
 
-                    
+
                 }
 
-                
 
 
 
-                //DEBUG("OUT\n" + output);
-                //DEBUG("Ended\n" );
-                Test_case++;
             }
+
 
 
 
@@ -1346,8 +1410,8 @@ namespace Otogexe
                 }
             }
 
-
-            Res.Text = "["+Otog_Verdict+"]";
+            if(Test_case <= 20) Res.Text = "[" + Otog_Verdict + "]";
+            else Res.Text = "[" + Over_Verdict + "]";
             if (Test_Comment == "")
             {
                 Res.ForeColor = Color.FromArgb(87 / 2, 229 / 2, 87 / 2);
@@ -1360,7 +1424,8 @@ namespace Otogexe
                 CommentO = Test_Comment.Split('\n');
             }
 
-            Poi.Text = string.Format("{0:0.##}", (float)(n_Pass)/n_Test_case*100);
+
+            Poi.Text = string.Format("{0:0.##}", (float)(Scoring) /n_Test_case*100);
             TimeUse.Text = TimeUsed.ToString();
 
 
@@ -1371,10 +1436,9 @@ namespace Otogexe
         {
             try
             {
-                string URL = "https://otogexe.firebaseio.com/Now_Ver.json";
 
                 HttpClient Hclient = new HttpClient();
-                Hclient.BaseAddress = new Uri(URL);
+                Hclient.BaseAddress = new Uri("https://otogexe.firebaseio.com/Now_Ver.json");
 
                 // Add an Accept header for JSON format.
                 Hclient.DefaultRequestHeaders.Accept.Add(
@@ -1385,16 +1449,40 @@ namespace Otogexe
                 if (response.IsSuccessStatusCode)
                 {
                     // Parse the response body.
-                    string dataObjects = response.Content.ReadAsStringAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
+                    string dataObjects = response.Content.ReadAsStringAsync().Result.Split('\"')[1];  //Make sure to add a reference to System.Net.Http.Formatting.dll
 
-                    dataObjects = dataObjects.Split('\"')[1];
 
 
                     if (CurVer.Text != dataObjects)
                     {
                         MessageBox.Show(G_Lang[Lang_Index]["CUNup"], "Update!");
 
-                        Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+                        Hclient = new HttpClient();
+
+                        Hclient.BaseAddress = new Uri("https://otogexe.firebaseio.com/Use_Updater.json");
+
+
+                        Hclient.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        response = Hclient.GetAsync("").Result;
+
+                        string ISU = response.Content.ReadAsStringAsync().Result;
+
+                        
+
+                        if (ISU == "true")
+                        {
+                            Process.Start(CUR_DIR + "\\OtogUpgrader.exe");
+                            Application.ExitThread();
+                        }
+                        else
+                        {
+                            Process.Start("https://drive.google.com/drive/folders/1CbYPFDJ_nS1SgycmegMHNi2s8tRFNv7g?usp=sharing");
+                        }
+
+
+                        
                     }
                     else
                     {
@@ -1435,9 +1523,20 @@ namespace Otogexe
         {
             if (TimeLimitlabel.Visible)
             {
-                TimeLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Time"] + ": {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f) * Time_Factor[LangSelect.Text]);
+                string Lang_Str = LangSelect.Text;
+
+
+                
+
+                
+
+                TimeLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Time"] + ": {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f) * Time_Factor[Lang_Str]);
                 MemLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Mem"] + ": {0}mb", Cur_Task_Info.Info_task.MemLimit);
             }
+            var rm = Properties.Resources.ResourceManager;
+            LangPic.Image = (Image)rm.GetObject(LangSelect.Text);
+
+            DirOfSC.Text = "";
         }
 
         public int Lang_Index = 0;
@@ -1468,10 +1567,14 @@ namespace Otogexe
             labelOutput.Text = G_Lang[index]["Output"];
             STWStart.Text = G_Lang[index]["Start Clock"];
 
+            MoreTask.Text = G_Lang[index]["More Task"];
+            Help3.Text = G_Lang[index]["Help"];
 
             if (TimeLimitlabel.Visible)
             {
-                TimeLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Time"] + ": {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f)*Time_Factor[LangSelect.Text]);
+                string Meow = LangSelect.Text;
+                float Fac = Time_Factor[Meow];
+                TimeLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Time"] + ": {0:0.0}sec", (float)(Cur_Task_Info.Info_task.TimeLimit / 1000f)*Fac);
                 MemLimitlabel.Text = string.Format(G_Lang[Lang_Index]["Mem"] + ": {0}mb", Cur_Task_Info.Info_task.MemLimit);
             }
 
@@ -1484,6 +1587,18 @@ namespace Otogexe
             Use_Lang((Lang_Index+1)%G_Lang.Count);
         }
 
+        private void MoreTask_Click(object sender, EventArgs e)
+        {
+            if(File.Exists(CUR_DIR + "\\ProblemDownload.exe"))
+            {
+                Process.Start(CUR_DIR + "\\ProblemDownload.exe");
+            }
+            else
+            {
+                MessageBox.Show("ไม่พบโปรแกรมดาวโหลดโจทย์", "เกิดข้อผิดพลาด");
+            }
+            
+        }
     }
 
 
@@ -1498,6 +1613,12 @@ namespace Otogexe
         public string ArgsCMD
         {
             set; get;
+        }
+
+        public Mini_CMD()
+        {
+            MainCMD = "echo Meow";
+            ArgsCMD = "";
         }
 
         public Mini_CMD(string a, string b)
@@ -1522,47 +1643,27 @@ namespace Otogexe
 
     };
 
-    public class Info_Compiling
+
+    public class Com_Run
     {
-        public Mini_CMD C
+        public Mini_CMD Compiler
         {
-            get; set;
-        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\gcc.exe\"", "-O2 \"<<Cur_Src>>\" -o \"<<Cur_Run_Exe>>\"");
-        public Mini_CMD CPP
+            set; get;
+        } = new Mini_CMD();
+        public Mini_CMD Runner
         {
-            get; set;
-        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\g++.exe\"", "-O2 -std=c++17 \"<<Cur_Src>> \" -o \"<<Cur_Run_Exe>>\"");
-        public Mini_CMD PY
-        {
-            get; set;//python -m py_compile
-        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "-m py_compile \"<<Cur_Src>>\"");
-        public Mini_CMD JAVA
-        {
-            get; set;
-        } = new Mini_CMD("cmd.exe", "echo Meow");
+            set; get;
+        } = new Mini_CMD();
 
-    };
+        public Com_Run(string com_exe,string com_args,string run_exe,string run_args)
+        {
+            Compiler.MainCMD = com_exe;
+            Compiler.ArgsCMD = com_args;
+            Runner.MainCMD = run_exe;
+            Runner.ArgsCMD = run_args;
+        }
 
-    public class Info_Running
-    {
-        public Mini_CMD C
-        {
-            get; set;
-        } = new Mini_CMD("<<Cur_Run_Exe>>", "");
-        public Mini_CMD CPP
-        {
-            get; set;
-        } = new Mini_CMD("<<Cur_Run_Exe>>", "");
-        public Mini_CMD PY
-        {
-            get; set;
-        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "\"<<Cur_Src>>\"");
-        public Mini_CMD JAVA
-        {
-            get; set;
-        } = new Mini_CMD("cmd.exe", "echo Meow");
-
-    };
+    }
 
     public class Over_Task
     {
@@ -1571,13 +1672,34 @@ namespace Otogexe
             set; get;
         } = new Info_Task();
 
-        public Info_Compiling Info_compiling
+        public Dictionary<string, Com_Run> Info_ComRun
         {
             set; get;
-        } = new Info_Compiling();
-        public Info_Running Info_running
+        } = new Dictionary<string, Com_Run>();
+
+        public Mini_CMD Judge_Task
         {
             set; get;
-        } = new Info_Running();
+        } = new Mini_CMD("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "\"<<Cur_Dir>>\\StdJudge\\judge.py\"");
+
+        public Over_Task()
+        {
+
+        }
+
+        public Over_Task(string Typee)
+        {
+            if (Typee.ToLower() == "default")
+            {
+                Info_ComRun = new Dictionary<string, Com_Run>()
+                {
+                    {"C",new Com_Run("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\gcc.exe\"", "-O2 \"<<Cur_Src>>\" -o \"<<Cur_Run_Exe>>\"","\"<<Cur_Run_Exe>>\"", "\"\"")},
+                    {"C++",new Com_Run("\"<<Cur_Dir>>\\Compiler\\MinGW\\bin\\g++.exe\"", "-O2 -std=c++17 \"<<Cur_Src>> \" -o \"<<Cur_Run_Exe>>\"","\"<<Cur_Run_Exe>>\"", "\"\"")},
+                    {"Python",new Com_Run("\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "-m py_compile \"<<Cur_Src>>\"","\"<<Cur_Dir>>\\Compiler\\Python\\python.exe\"", "\"<<Cur_Src>>\"")},
+                    {"Java",new Com_Run("\"<<Cur_Dir>>\\Compiler\\Java\\bin\\javac.exe\"", "\"<<Cur_Src>>\"","\"<<Cur_Dir>>\\Compiler\\Java\\bin\\java.exe\"", "\"<<Cur_Src>>\"")},
+                };
+            }
+        }
+
     };
 }
