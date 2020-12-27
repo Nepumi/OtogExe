@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Otog));
             this.TaskSelect = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.DirOfSC = new System.Windows.Forms.TextBox();
             this.DirBro = new System.Windows.Forms.Button();
             this.Sub = new System.Windows.Forms.Button();
             this.Sstate = new System.Windows.Forms.Label();
@@ -42,7 +41,6 @@
             this.Commenttt = new System.Windows.Forms.TextBox();
             this.JustUnder = new System.Windows.Forms.TextBox();
             this.Docu = new System.Windows.Forms.Button();
-            this.Help3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.FileSubed = new System.Windows.Forms.Label();
@@ -59,7 +57,6 @@
             this.TestInput = new System.Windows.Forms.TextBox();
             this.labelOutput = new System.Windows.Forms.Label();
             this.labelInput = new System.Windows.Forms.Label();
-            this.CheckBut = new System.Windows.Forms.Button();
             this.TimeLimitlabel = new System.Windows.Forms.Label();
             this.MemLimitlabel = new System.Windows.Forms.Label();
             this.PointLa = new System.Windows.Forms.Label();
@@ -69,10 +66,27 @@
             this.TimeLa2 = new System.Windows.Forms.Label();
             this.LangSelect = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.LangChan = new System.Windows.Forms.Button();
             this.LangPic = new System.Windows.Forms.PictureBox();
-            this.MoreTask = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.otogexeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moreTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ภาษาไทยToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.พาศาทยToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ภาษาแมวToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conectToDiscordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SrcNamae = new System.Windows.Forms.Label();
+            this.TestEachRes = new System.Windows.Forms.Label();
+            this.TestSelect = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.LangPic)).BeginInit();
+            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TestSelect)).BeginInit();
             this.SuspendLayout();
             // 
             // TaskSelect
@@ -80,7 +94,7 @@
             this.TaskSelect.Enabled = false;
             this.TaskSelect.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TaskSelect.FormattingEnabled = true;
-            this.TaskSelect.Location = new System.Drawing.Point(297, 68);
+            this.TaskSelect.Location = new System.Drawing.Point(297, 73);
             this.TaskSelect.Name = "TaskSelect";
             this.TaskSelect.Size = new System.Drawing.Size(252, 36);
             this.TaskSelect.TabIndex = 1;
@@ -91,27 +105,18 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 19);
+            this.label1.Location = new System.Drawing.Point(24, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 37);
             this.label1.TabIndex = 1;
             this.label1.Text = "Task";
             // 
-            // DirOfSC
-            // 
-            this.DirOfSC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DirOfSC.Location = new System.Drawing.Point(158, 147);
-            this.DirOfSC.Name = "DirOfSC";
-            this.DirOfSC.Size = new System.Drawing.Size(391, 27);
-            this.DirOfSC.TabIndex = 3;
-            this.DirOfSC.TextChanged += new System.EventHandler(this.DirOfSC_TextChanged);
-            // 
             // DirBro
             // 
             this.DirBro.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DirBro.Location = new System.Drawing.Point(563, 147);
+            this.DirBro.Location = new System.Drawing.Point(162, 156);
             this.DirBro.Name = "DirBro";
-            this.DirBro.Size = new System.Drawing.Size(109, 34);
+            this.DirBro.Size = new System.Drawing.Size(97, 31);
             this.DirBro.TabIndex = 4;
             this.DirBro.Text = "browse";
             this.DirBro.UseVisualStyleBackColor = true;
@@ -120,7 +125,7 @@
             // Sub
             // 
             this.Sub.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sub.Location = new System.Drawing.Point(29, 187);
+            this.Sub.Location = new System.Drawing.Point(31, 199);
             this.Sub.Name = "Sub";
             this.Sub.Size = new System.Drawing.Size(117, 68);
             this.Sub.TabIndex = 5;
@@ -130,20 +135,21 @@
             // 
             // Sstate
             // 
-            this.Sstate.AutoSize = true;
+            this.Sstate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Sstate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sstate.ForeColor = System.Drawing.Color.IndianRed;
-            this.Sstate.Location = new System.Drawing.Point(31, 259);
+            this.Sstate.Location = new System.Drawing.Point(493, 223);
             this.Sstate.Name = "Sstate";
-            this.Sstate.Size = new System.Drawing.Size(150, 38);
+            this.Sstate.Size = new System.Drawing.Size(199, 38);
             this.Sstate.TabIndex = 5;
             this.Sstate.Text = "Select Task";
+            this.Sstate.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // ResLabel
             // 
             this.ResLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ResLabel.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ResLabel.Location = new System.Drawing.Point(12, 384);
+            this.ResLabel.Location = new System.Drawing.Point(12, 354);
             this.ResLabel.Name = "ResLabel";
             this.ResLabel.Size = new System.Drawing.Size(140, 32);
             this.ResLabel.TabIndex = 6;
@@ -155,7 +161,7 @@
             this.Res.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Res.AutoSize = true;
             this.Res.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Res.Location = new System.Drawing.Point(152, 385);
+            this.Res.Location = new System.Drawing.Point(152, 355);
             this.Res.Name = "Res";
             this.Res.Size = new System.Drawing.Size(29, 32);
             this.Res.TabIndex = 7;
@@ -166,7 +172,7 @@
             this.SpoilBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SpoilBut.AutoSize = true;
             this.SpoilBut.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpoilBut.Location = new System.Drawing.Point(61, 455);
+            this.SpoilBut.Location = new System.Drawing.Point(61, 422);
             this.SpoilBut.Name = "SpoilBut";
             this.SpoilBut.Size = new System.Drawing.Size(154, 27);
             this.SpoilBut.TabIndex = 8;
@@ -191,7 +197,7 @@
             // 
             this.JustUnder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.JustUnder.Font = new System.Drawing.Font("Segoe UI", 1.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.JustUnder.Location = new System.Drawing.Point(29, 305);
+            this.JustUnder.Location = new System.Drawing.Point(31, 277);
             this.JustUnder.Name = "JustUnder";
             this.JustUnder.ReadOnly = true;
             this.JustUnder.Size = new System.Drawing.Size(643, 10);
@@ -199,32 +205,22 @@
             // 
             // Docu
             // 
+            this.Docu.BackColor = System.Drawing.SystemColors.Control;
             this.Docu.Enabled = false;
             this.Docu.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Docu.Location = new System.Drawing.Point(564, 68);
+            this.Docu.Location = new System.Drawing.Point(564, 73);
             this.Docu.Name = "Docu";
             this.Docu.Size = new System.Drawing.Size(109, 34);
             this.Docu.TabIndex = 2;
             this.Docu.Text = "Doc";
-            this.Docu.UseVisualStyleBackColor = true;
+            this.Docu.UseVisualStyleBackColor = false;
             this.Docu.Click += new System.EventHandler(this.Docu_Click);
-            // 
-            // Help3
-            // 
-            this.Help3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Help3.Location = new System.Drawing.Point(564, 267);
-            this.Help3.Name = "Help3";
-            this.Help3.Size = new System.Drawing.Size(108, 33);
-            this.Help3.TabIndex = 9;
-            this.Help3.Text = "How to use";
-            this.Help3.UseVisualStyleBackColor = true;
-            this.Help3.Click += new System.EventHandler(this.Help3_Click);
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(88, 352);
+            this.label2.Location = new System.Drawing.Point(88, 322);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 32);
             this.label2.TabIndex = 14;
@@ -236,7 +232,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(81, 320);
+            this.label3.Location = new System.Drawing.Point(81, 290);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 32);
             this.label3.TabIndex = 15;
@@ -248,7 +244,7 @@
             this.FileSubed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.FileSubed.AutoSize = true;
             this.FileSubed.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileSubed.Location = new System.Drawing.Point(152, 353);
+            this.FileSubed.Location = new System.Drawing.Point(152, 323);
             this.FileSubed.Name = "FileSubed";
             this.FileSubed.Size = new System.Drawing.Size(0, 32);
             this.FileSubed.TabIndex = 16;
@@ -258,7 +254,7 @@
             this.TaskSubed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TaskSubed.AutoSize = true;
             this.TaskSubed.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TaskSubed.Location = new System.Drawing.Point(152, 322);
+            this.TaskSubed.Location = new System.Drawing.Point(152, 292);
             this.TaskSubed.Name = "TaskSubed";
             this.TaskSubed.Size = new System.Drawing.Size(0, 32);
             this.TaskSubed.TabIndex = 17;
@@ -267,7 +263,7 @@
             // 
             this.STWStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.STWStart.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.STWStart.Location = new System.Drawing.Point(564, 224);
+            this.STWStart.Location = new System.Drawing.Point(579, 147);
             this.STWStart.Name = "STWStart";
             this.STWStart.Size = new System.Drawing.Size(108, 31);
             this.STWStart.TabIndex = 6;
@@ -286,7 +282,7 @@
             this.STW_Dis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.STW_Dis.AutoSize = true;
             this.STW_Dis.Font = new System.Drawing.Font("Segoe UI Semibold", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.STW_Dis.Location = new System.Drawing.Point(362, 209);
+            this.STW_Dis.Location = new System.Drawing.Point(377, 147);
             this.STW_Dis.Name = "STW_Dis";
             this.STW_Dis.Size = new System.Drawing.Size(196, 46);
             this.STW_Dis.TabIndex = 19;
@@ -297,9 +293,9 @@
             // 
             this.STW_Reset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.STW_Reset.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.STW_Reset.Location = new System.Drawing.Point(363, 267);
+            this.STW_Reset.Location = new System.Drawing.Point(578, 184);
             this.STW_Reset.Name = "STW_Reset";
-            this.STW_Reset.Size = new System.Drawing.Size(195, 30);
+            this.STW_Reset.Size = new System.Drawing.Size(109, 30);
             this.STW_Reset.TabIndex = 7;
             this.STW_Reset.Text = "Reset Clock";
             this.STW_Reset.UseVisualStyleBackColor = true;
@@ -310,7 +306,7 @@
             // 
             this.GroupTaskSelect.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GroupTaskSelect.FormattingEnabled = true;
-            this.GroupTaskSelect.Location = new System.Drawing.Point(31, 68);
+            this.GroupTaskSelect.Location = new System.Drawing.Point(31, 73);
             this.GroupTaskSelect.Name = "GroupTaskSelect";
             this.GroupTaskSelect.Size = new System.Drawing.Size(252, 36);
             this.GroupTaskSelect.TabIndex = 0;
@@ -333,23 +329,24 @@
             this.CurVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CurVer.AutoSize = true;
             this.CurVer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CurVer.Location = new System.Drawing.Point(333, 20);
+            this.CurVer.Location = new System.Drawing.Point(576, 28);
             this.CurVer.Name = "CurVer";
-            this.CurVer.Size = new System.Drawing.Size(97, 28);
+            this.CurVer.Size = new System.Drawing.Size(94, 28);
             this.CurVer.TabIndex = 21;
-            this.CurVer.Text = "Beta 1.0.0";
+            this.CurVer.Text = "Beta 1.0.1";
             this.CurVer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TestModeCheck
             // 
             this.TestModeCheck.AutoSize = true;
+            this.TestModeCheck.BackColor = System.Drawing.SystemColors.Control;
             this.TestModeCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestModeCheck.Location = new System.Drawing.Point(152, 224);
+            this.TestModeCheck.Location = new System.Drawing.Point(154, 244);
             this.TestModeCheck.Name = "TestModeCheck";
             this.TestModeCheck.Size = new System.Drawing.Size(105, 27);
             this.TestModeCheck.TabIndex = 24;
             this.TestModeCheck.Text = "TestMode";
-            this.TestModeCheck.UseVisualStyleBackColor = true;
+            this.TestModeCheck.UseVisualStyleBackColor = false;
             this.TestModeCheck.CheckedChanged += new System.EventHandler(this.TestModeCheck_CheckedChanged);
             // 
             // TestOutput
@@ -409,25 +406,14 @@
             this.labelInput.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.labelInput.Visible = false;
             // 
-            // CheckBut
-            // 
-            this.CheckBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CheckBut.Location = new System.Drawing.Point(443, 17);
-            this.CheckBut.Name = "CheckBut";
-            this.CheckBut.Size = new System.Drawing.Size(109, 39);
-            this.CheckBut.TabIndex = 29;
-            this.CheckBut.Text = "Check Update";
-            this.CheckBut.UseVisualStyleBackColor = true;
-            this.CheckBut.Click += new System.EventHandler(this.CheckBut_Click);
-            // 
             // TimeLimitlabel
             // 
-            this.TimeLimitlabel.AutoSize = true;
+            this.TimeLimitlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TimeLimitlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TimeLimitlabel.ForeColor = System.Drawing.Color.Tomato;
-            this.TimeLimitlabel.Location = new System.Drawing.Point(292, 116);
+            this.TimeLimitlabel.Location = new System.Drawing.Point(525, 294);
             this.TimeLimitlabel.Name = "TimeLimitlabel";
-            this.TimeLimitlabel.Size = new System.Drawing.Size(83, 28);
+            this.TimeLimitlabel.Size = new System.Drawing.Size(149, 28);
             this.TimeLimitlabel.TabIndex = 31;
             this.TimeLimitlabel.Text = "Time: 1s";
             this.TimeLimitlabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -435,22 +421,22 @@
             // 
             // MemLimitlabel
             // 
-            this.MemLimitlabel.AutoSize = true;
+            this.MemLimitlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.MemLimitlabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MemLimitlabel.ForeColor = System.Drawing.Color.Tomato;
-            this.MemLimitlabel.Location = new System.Drawing.Point(425, 116);
+            this.MemLimitlabel.Location = new System.Drawing.Point(525, 322);
             this.MemLimitlabel.Name = "MemLimitlabel";
-            this.MemLimitlabel.Size = new System.Drawing.Size(127, 28);
+            this.MemLimitlabel.Size = new System.Drawing.Size(149, 28);
             this.MemLimitlabel.TabIndex = 32;
             this.MemLimitlabel.Text = "Mem: 256mb";
-            this.MemLimitlabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.MemLimitlabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.MemLimitlabel.Visible = false;
             // 
             // PointLa
             // 
             this.PointLa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PointLa.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PointLa.Location = new System.Drawing.Point(69, 417);
+            this.PointLa.Location = new System.Drawing.Point(69, 387);
             this.PointLa.Name = "PointLa";
             this.PointLa.Size = new System.Drawing.Size(81, 32);
             this.PointLa.TabIndex = 33;
@@ -462,7 +448,7 @@
             this.Poi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Poi.AutoSize = true;
             this.Poi.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Poi.Location = new System.Drawing.Point(146, 417);
+            this.Poi.Location = new System.Drawing.Point(146, 387);
             this.Poi.Name = "Poi";
             this.Poi.Size = new System.Drawing.Size(28, 32);
             this.Poi.TabIndex = 34;
@@ -472,7 +458,7 @@
             // 
             this.TimeLa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeLa.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLa.Location = new System.Drawing.Point(240, 417);
+            this.TimeLa.Location = new System.Drawing.Point(240, 387);
             this.TimeLa.Name = "TimeLa";
             this.TimeLa.Size = new System.Drawing.Size(73, 32);
             this.TimeLa.TabIndex = 35;
@@ -484,7 +470,7 @@
             this.TimeUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeUse.AutoSize = true;
             this.TimeUse.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeUse.Location = new System.Drawing.Point(319, 417);
+            this.TimeUse.Location = new System.Drawing.Point(319, 387);
             this.TimeUse.Name = "TimeUse";
             this.TimeUse.Size = new System.Drawing.Size(28, 32);
             this.TimeUse.TabIndex = 36;
@@ -496,7 +482,7 @@
             this.TimeLa2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TimeLa2.AutoSize = true;
             this.TimeLa2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimeLa2.Location = new System.Drawing.Point(397, 417);
+            this.TimeLa2.Location = new System.Drawing.Point(397, 387);
             this.TimeLa2.Name = "TimeLa2";
             this.TimeLa2.Size = new System.Drawing.Size(46, 32);
             this.TimeLa2.TabIndex = 37;
@@ -511,7 +497,7 @@
             "C++",
             "Python",
             "Java"});
-            this.LangSelect.Location = new System.Drawing.Point(31, 145);
+            this.LangSelect.Location = new System.Drawing.Point(31, 157);
             this.LangSelect.Name = "LangSelect";
             this.LangSelect.Size = new System.Drawing.Size(113, 36);
             this.LangSelect.TabIndex = 38;
@@ -522,23 +508,11 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(26, 112);
+            this.label4.Location = new System.Drawing.Point(26, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 30);
             this.label4.TabIndex = 39;
             this.label4.Text = "Lang";
-            // 
-            // LangChan
-            // 
-            this.LangChan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LangChan.Font = new System.Drawing.Font("Segoe UI", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LangChan.Location = new System.Drawing.Point(564, 17);
-            this.LangChan.Name = "LangChan";
-            this.LangChan.Size = new System.Drawing.Size(109, 39);
-            this.LangChan.TabIndex = 40;
-            this.LangChan.Text = "ภาษาไทย";
-            this.LangChan.UseVisualStyleBackColor = true;
-            this.LangChan.Click += new System.EventHandler(this.LangChan_Click);
             // 
             // LangPic
             // 
@@ -550,25 +524,168 @@
             this.LangPic.TabIndex = 41;
             this.LangPic.TabStop = false;
             // 
-            // MoreTask
+            // menuStrip1
             // 
-            this.MoreTask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.MoreTask.Location = new System.Drawing.Point(102, 21);
-            this.MoreTask.Name = "MoreTask";
-            this.MoreTask.Size = new System.Drawing.Size(108, 33);
-            this.MoreTask.TabIndex = 42;
-            this.MoreTask.Text = "More Task";
-            this.MoreTask.UseVisualStyleBackColor = true;
-            this.MoreTask.Click += new System.EventHandler(this.MoreTask_Click);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.otogexeToolStripMenuItem,
+            this.optionToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(700, 30);
+            this.menuStrip1.TabIndex = 43;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // otogexeToolStripMenuItem
+            // 
+            this.otogexeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkUpdateToolStripMenuItem,
+            this.moreTaskToolStripMenuItem,
+            this.helpToolStripMenuItem,
+            this.reportToolStripMenuItem});
+            this.otogexeToolStripMenuItem.Name = "otogexeToolStripMenuItem";
+            this.otogexeToolStripMenuItem.Size = new System.Drawing.Size(83, 26);
+            this.otogexeToolStripMenuItem.Text = "Otog.exe";
+            // 
+            // checkUpdateToolStripMenuItem
+            // 
+            this.checkUpdateToolStripMenuItem.Name = "checkUpdateToolStripMenuItem";
+            this.checkUpdateToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.checkUpdateToolStripMenuItem.Text = "Check Update";
+            this.checkUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkUpdateToolStripMenuItem_Click);
+            // 
+            // moreTaskToolStripMenuItem
+            // 
+            this.moreTaskToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.moreTaskToolStripMenuItem.Name = "moreTaskToolStripMenuItem";
+            this.moreTaskToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.moreTaskToolStripMenuItem.Text = "More Task";
+            this.moreTaskToolStripMenuItem.Click += new System.EventHandler(this.moreTaskToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // reportToolStripMenuItem
+            // 
+            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.reportToolStripMenuItem.Text = "Report";
+            // 
+            // optionToolStripMenuItem
+            // 
+            this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.languageToolStripMenuItem,
+            this.conectToDiscordToolStripMenuItem});
+            this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(69, 26);
+            this.optionToolStripMenuItem.Text = "Option";
+            // 
+            // languageToolStripMenuItem
+            // 
+            this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.englishToolStripMenuItem,
+            this.ภาษาไทยToolStripMenuItem,
+            this.พาศาทยToolStripMenuItem,
+            this.ภาษาแมวToolStripMenuItem});
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            this.languageToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.languageToolStripMenuItem.Text = "Display Language";
+            // 
+            // englishToolStripMenuItem
+            // 
+            this.englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            this.englishToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
+            this.englishToolStripMenuItem.Text = "English";
+            this.englishToolStripMenuItem.Click += new System.EventHandler(this.englishToolStripMenuItem_Click);
+            // 
+            // ภาษาไทยToolStripMenuItem
+            // 
+            this.ภาษาไทยToolStripMenuItem.Name = "ภาษาไทยToolStripMenuItem";
+            this.ภาษาไทยToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
+            this.ภาษาไทยToolStripMenuItem.Text = "ภาษาไทย";
+            this.ภาษาไทยToolStripMenuItem.Click += new System.EventHandler(this.ภาษาไทยToolStripMenuItem_Click);
+            // 
+            // พาศาทยToolStripMenuItem
+            // 
+            this.พาศาทยToolStripMenuItem.Name = "พาศาทยToolStripMenuItem";
+            this.พาศาทยToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
+            this.พาศาทยToolStripMenuItem.Text = "พาศาทัย";
+            this.พาศาทยToolStripMenuItem.Click += new System.EventHandler(this.พาศาทยToolStripMenuItem_Click);
+            // 
+            // ภาษาแมวToolStripMenuItem
+            // 
+            this.ภาษาแมวToolStripMenuItem.Name = "ภาษาแมวToolStripMenuItem";
+            this.ภาษาแมวToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
+            this.ภาษาแมวToolStripMenuItem.Text = "ภาษาแมว";
+            this.ภาษาแมวToolStripMenuItem.Click += new System.EventHandler(this.ภาษาแมวToolStripMenuItem_Click);
+            // 
+            // conectToDiscordToolStripMenuItem
+            // 
+            this.conectToDiscordToolStripMenuItem.Name = "conectToDiscordToolStripMenuItem";
+            this.conectToDiscordToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.conectToDiscordToolStripMenuItem.Text = "Connect to Discord";
+            this.conectToDiscordToolStripMenuItem.Click += new System.EventHandler(this.conectToDiscordToolStripMenuItem_Click);
+            // 
+            // SrcNamae
+            // 
+            this.SrcNamae.AutoSize = true;
+            this.SrcNamae.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SrcNamae.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.SrcNamae.Location = new System.Drawing.Point(160, 208);
+            this.SrcNamae.Name = "SrcNamae";
+            this.SrcNamae.Size = new System.Drawing.Size(0, 23);
+            this.SrcNamae.TabIndex = 44;
+            // 
+            // TestEachRes
+            // 
+            this.TestEachRes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TestEachRes.AutoSize = true;
+            this.TestEachRes.Font = new System.Drawing.Font("Segoe UI", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestEachRes.ForeColor = System.Drawing.Color.MediumSeaGreen;
+            this.TestEachRes.Location = new System.Drawing.Point(55, 467);
+            this.TestEachRes.Name = "TestEachRes";
+            this.TestEachRes.Size = new System.Drawing.Size(204, 37);
+            this.TestEachRes.TabIndex = 45;
+            this.TestEachRes.Text = "Test#1 : Accept";
+            this.TestEachRes.Visible = false;
+            // 
+            // TestSelect
+            // 
+            this.TestSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.TestSelect.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestSelect.Location = new System.Drawing.Point(568, 474);
+            this.TestSelect.Name = "TestSelect";
+            this.TestSelect.Size = new System.Drawing.Size(58, 30);
+            this.TestSelect.TabIndex = 46;
+            this.TestSelect.Visible = false;
+            this.TestSelect.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(520, 474);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 28);
+            this.label5.TabIndex = 47;
+            this.label5.Text = "Test#";
+            this.label5.Visible = false;
             // 
             // Otog
             // 
-            this.AcceptButton = this.Help3;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(700, 723);
-            this.Controls.Add(this.MoreTask);
-            this.Controls.Add(this.LangChan);
+            this.Controls.Add(this.TestSelect);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.TestEachRes);
+            this.Controls.Add(this.SrcNamae);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.LangSelect);
             this.Controls.Add(this.TimeLa2);
@@ -578,7 +695,6 @@
             this.Controls.Add(this.PointLa);
             this.Controls.Add(this.MemLimitlabel);
             this.Controls.Add(this.TimeLimitlabel);
-            this.Controls.Add(this.CheckBut);
             this.Controls.Add(this.labelInput);
             this.Controls.Add(this.labelOutput);
             this.Controls.Add(this.TestInput);
@@ -594,7 +710,6 @@
             this.Controls.Add(this.FileSubed);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.Help3);
             this.Controls.Add(this.Docu);
             this.Controls.Add(this.JustUnder);
             this.Controls.Add(this.Commenttt);
@@ -604,16 +719,20 @@
             this.Controls.Add(this.Sstate);
             this.Controls.Add(this.Sub);
             this.Controls.Add(this.DirBro);
-            this.Controls.Add(this.DirOfSC);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TaskSelect);
             this.Controls.Add(this.LangPic);
+            this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Otog";
             this.Text = "Otog Exe";
             this.Activated += new System.EventHandler(this.Form1_Activated);
             ((System.ComponentModel.ISupportInitialize)(this.LangPic)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TestSelect)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -623,7 +742,6 @@
 
         private System.Windows.Forms.ComboBox TaskSelect;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox DirOfSC;
         private System.Windows.Forms.Button DirBro;
         private System.Windows.Forms.Button Sub;
         private System.Windows.Forms.Label Sstate;
@@ -633,7 +751,6 @@
         private System.Windows.Forms.TextBox Commenttt;
         private System.Windows.Forms.TextBox JustUnder;
         private System.Windows.Forms.Button Docu;
-        private System.Windows.Forms.Button Help3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label FileSubed;
@@ -650,7 +767,6 @@
         private System.Windows.Forms.TextBox TestInput;
         private System.Windows.Forms.Label labelOutput;
         private System.Windows.Forms.Label labelInput;
-        private System.Windows.Forms.Button CheckBut;
         private System.Windows.Forms.Label TimeLimitlabel;
         private System.Windows.Forms.Label MemLimitlabel;
         private System.Windows.Forms.Label PointLa;
@@ -660,9 +776,24 @@
         private System.Windows.Forms.Label TimeLa2;
         private System.Windows.Forms.ComboBox LangSelect;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button LangChan;
         private System.Windows.Forms.PictureBox LangPic;
-        private System.Windows.Forms.Button MoreTask;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem otogexeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moreTaskToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem englishToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ภาษาไทยToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem พาศาทยToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ภาษาแมวToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
+        private System.Windows.Forms.Label SrcNamae;
+        private System.Windows.Forms.Label TestEachRes;
+        private System.Windows.Forms.NumericUpDown TestSelect;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem conectToDiscordToolStripMenuItem;
     }
 }
 
