@@ -32,7 +32,7 @@ namespace Otogexe
     public partial class Otog : Form
     {
 
-        public const int MAX_TESTCASE = 300;
+        public const int MAX_TESTCASE = 501;
 
         public List<string> Ava_Lang = new List<string> { "C", "C++", "Python", "Java" };
         public Dictionary<string, string> File_Type = new Dictionary<string, string>() {
@@ -1116,10 +1116,10 @@ namespace Otogexe
                     Cur_Task_Info.Info_ComRun[Lang_Str].Runner.ArgsCMD));
 
 
-
                 Runnu.StartInfo.CreateNoWindow = true;
                 Runnu.StartInfo.UseShellExecute = false;
                 Runnu.StartInfo.RedirectStandardOutput = true;
+                Runnu.StartInfo.RedirectStandardError = true;
 
                 Runnu.Start();
 
@@ -1130,14 +1130,19 @@ namespace Otogexe
                 StreamReader reader = Runnu.StandardOutput;
                 string output = reader.ReadToEnd();
 
+                reader = Runnu.StandardError;
+                string errorJudge = reader.ReadToEnd();
 
                 string[] VeryOut = output.Split(';');
 
-
+                if(Test_case >= MAX_TESTCASE)
+                {
+                    break;
+                }
 
                 if (VeryOut.Length != 5)
                 {
-                    CommentO.Add(new string[] { "KSES said " + G_Lang[Lang_Index]["J!"] });
+                    CommentO.Add(new string[] { "KSES said " + errorJudge });
                     Verdicts.Add('!');
                     Fucked = true;
                     if (Over_Verdict == "")
@@ -1659,6 +1664,25 @@ namespace Otogexe
             
         }
 
+        private void pathToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(File.Exists(CUR_DIR + "\\PathConfig.exe"))
+            {
+                Process.Start(CUR_DIR + "\\PathConfig.exe");
+                Application.ExitThread();
+            }
+            else
+            {
+                MessageBox.Show("PathConfig.exe not found :(");
+            }
+            
+            
+        }
+
+        private void reportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/Nepumi/Otogexe/issues");
+        }
     }
 
 

@@ -80,6 +80,7 @@
             this.พาศาทยToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ภาษาแมวToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.conectToDiscordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SrcNamae = new System.Windows.Forms.Label();
             this.TestEachRes = new System.Windows.Forms.Label();
             this.TestSelect = new System.Windows.Forms.NumericUpDown();
@@ -331,9 +332,9 @@
             this.CurVer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CurVer.Location = new System.Drawing.Point(576, 28);
             this.CurVer.Name = "CurVer";
-            this.CurVer.Size = new System.Drawing.Size(94, 28);
+            this.CurVer.Size = new System.Drawing.Size(96, 28);
             this.CurVer.TabIndex = 21;
-            this.CurVer.Text = "Beta 1.0.1";
+            this.CurVer.Text = "Beta 1.0.3";
             this.CurVer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // TestModeCheck
@@ -532,7 +533,7 @@
             this.optionToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(700, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(700, 28);
             this.menuStrip1.TabIndex = 43;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -544,13 +545,13 @@
             this.helpToolStripMenuItem,
             this.reportToolStripMenuItem});
             this.otogexeToolStripMenuItem.Name = "otogexeToolStripMenuItem";
-            this.otogexeToolStripMenuItem.Size = new System.Drawing.Size(83, 26);
+            this.otogexeToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.otogexeToolStripMenuItem.Text = "Otog.exe";
             // 
             // checkUpdateToolStripMenuItem
             // 
             this.checkUpdateToolStripMenuItem.Name = "checkUpdateToolStripMenuItem";
-            this.checkUpdateToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.checkUpdateToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.checkUpdateToolStripMenuItem.Text = "Check Update";
             this.checkUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkUpdateToolStripMenuItem_Click);
             // 
@@ -558,30 +559,32 @@
             // 
             this.moreTaskToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
             this.moreTaskToolStripMenuItem.Name = "moreTaskToolStripMenuItem";
-            this.moreTaskToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.moreTaskToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.moreTaskToolStripMenuItem.Text = "More Task";
             this.moreTaskToolStripMenuItem.Click += new System.EventHandler(this.moreTaskToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // reportToolStripMenuItem
             // 
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.reportToolStripMenuItem.Text = "Report";
+            this.reportToolStripMenuItem.Click += new System.EventHandler(this.reportToolStripMenuItem_Click);
             // 
             // optionToolStripMenuItem
             // 
             this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.languageToolStripMenuItem,
-            this.conectToDiscordToolStripMenuItem});
+            this.conectToDiscordToolStripMenuItem,
+            this.pathToolStripMenuItem});
             this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
-            this.optionToolStripMenuItem.Size = new System.Drawing.Size(69, 26);
+            this.optionToolStripMenuItem.Size = new System.Drawing.Size(69, 24);
             this.optionToolStripMenuItem.Text = "Option";
             // 
             // languageToolStripMenuItem
@@ -629,6 +632,13 @@
             this.conectToDiscordToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
             this.conectToDiscordToolStripMenuItem.Text = "Connect to Discord";
             this.conectToDiscordToolStripMenuItem.Click += new System.EventHandler(this.conectToDiscordToolStripMenuItem_Click);
+            // 
+            // pathToolStripMenuItem
+            // 
+            this.pathToolStripMenuItem.Name = "pathToolStripMenuItem";
+            this.pathToolStripMenuItem.Size = new System.Drawing.Size(219, 26);
+            this.pathToolStripMenuItem.Text = "Path Configuration";
+            this.pathToolStripMenuItem.Click += new System.EventHandler(this.pathToolStripMenuItem_Click);
             // 
             // SrcNamae
             // 
@@ -794,6 +804,7 @@
         private System.Windows.Forms.NumericUpDown TestSelect;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolStripMenuItem conectToDiscordToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pathToolStripMenuItem;
     }
 }
 
